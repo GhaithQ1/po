@@ -1,0 +1,180 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    transition: background-color 0.5s ease, color 0.5s ease; 
+}
+
+
+:root{
+    --main-color:#6746e4;
+    --box-color:#fff;
+    --body-color:#f0edf5;
+    --title-color:#252a3c;
+    --text-color:#585858;
+    --icon-color:#808080;
+    --shadow-color:hsla(228, 80%, 4%, .1);
+    --text-size:15px;
+    --title-size:18px;
+}
+.root_da{
+    --main-color:#6746e4;
+    --box-color:#292443;
+    --body-color:#1f1a32;
+    --title-color:#ffffff;
+    --text-color:#dadada;
+    --icon-color:#dadada;
+    --shadow-color:hsla(228, 80%, 4%, .3);
+    --text-size:15px;
+    --title-size:18px; 
+}
+
+.container{
+    padding-left: 50px;
+    padding-right: 50px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media(max-width:991px){
+    .container{
+        padding-left: 50px;
+        padding-right: 50px;
+
+    }
+}
+@media(max-width:767px){
+    .container{
+        padding-left: 10px;
+        padding-right: 10px;
+
+    }
+}
+
+body{
+    background-color: var(--body-color);
+    font-family: "Poppins", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings:"slnt" 0;
+  overflow-anchor: none;
+  transition: background-color 0.5s ease, color 0.5s ease; 
+}
+a{
+    text-decoration: none;
+}
+
+
+/* All Bost */
+.all_bost {
+    width: 100%;
+    padding: 20px;
+    background-color: var(--box-color);
+    border-radius: 20px;
+    box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.all_bost .name_shoole {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 20px;
+}
+
+.all_bost .name_shoole img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.all_bost .name_shoole .date_shoole {
+    display: flex;
+    flex-direction: column;
+}
+
+.all_bost .name_shoole .date_shoole p {
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.all_bost .name_shoole .date_shoole span {
+    font-size: 14px;
+    color: var(--icon-color);
+}
+
+.all_bost .interaction {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+}
+
+.all_bost .interaction .inter {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.all_bost .interaction .inter-icon{
+    font-size: 20px;
+    color: transparent;
+    stroke: var(--text-color);
+    stroke-width: 70;
+    cursor: pointer;
+transition: 0.3s all;
+}
+.all_bost .interaction .inter-icon:hover{
+    stroke: var(--main-color);
+    stroke-width:100;
+}
+/* All Bost */
+
+
+/* Secrole */
+/* ✅ للفايرفوكس - ضبط شكل السكرول */
+* {
+    scrollbar-color: var(--main-color) transparent;     
+   
+  }
+  
+  /* ✅ لمتصفحات WebKit (Chrome, Edge, Brave, Opera...) */
+  *::-webkit-scrollbar {
+    width: 8px;                          
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--main-color);
+    border-radius: 10px;
+  }
+  *::-webkit-scrollbar-track {
+    background: var(--box-color);
+  }
+    
+/* Secrole */
+
+.error {
+    color: red;
+    font-size: 13px;
+    /* margin: 0 0 5px 0; */
+    /* text-align: left; */
+    position: absolute;
+    left: 5px;
+    top: -10px;
+  }
+  
+  .div_error{
+    position: relative;
+  }
+  .question_error{
+    position: relative;
+  }
+  
+   .errors{
+    color: red;
+    font-size: 14px;
+    /* margin: 0 0 5px 0; */
+    /* text-align: left; */
+    position: absolute;
+    left: 10px;
+    top: -20px;
+  }
+  .diverrors{
+    position: relative;
+  }

@@ -1,0 +1,126 @@
+header{
+    height: 75px;
+    background-color: var(--box-color);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+}
+
+
+header.scrolled {
+    background-color: #ffffff90; /* اللون الذي يتم التغيير إليه عند السكروول */
+    color: white; /* تغيير النص إلى اللون الأبيض */
+  }
+header .container{
+    height: 100%;
+}
+header .container .header_respon{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    position: relative;
+}
+
+header .container .header_respon img{
+width: 150px;
+}
+
+header .container .header_respon form{
+    width: 500px;
+    height: 60%;
+    position: relative;
+}
+@media(max-width:991px){
+    header{
+position: relative;
+    }
+    
+    header .container .header_respon form{
+        display: none;
+    }
+}
+
+header .container .header_respon form .search_icon{
+position: absolute;
+top: 50%;
+transform:translateY(-50%);
+left:15px;
+color: var(--text-color);
+}
+header .container .header_respon form input{
+    width: 100%;
+    height: 100%;
+    padding: 10px 10px 10px 50px;
+    border-radius: 20px;
+    border: none;
+    background-color: var(--body-color);
+    font-size: var(--text-size);
+    border:2px solid transparent;
+    color: var(--text-color);
+
+}
+header .container .header_respon form input:focus{
+    outline: none;
+    border:2px solid var(--main-color);
+}
+
+header .container .header_respon .profile{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    position: relative;
+}
+
+header .container .header_respon .profile img{
+    width: 40px;
+    border-radius: 50%;
+}
+header .container .header_respon .profile p{
+    color: var(--text-color);
+    text-decoration: none;
+}
+header .container .header_respon .menu_hover{
+    position: absolute;
+    top: 80px;
+    background-color: var(--box-color);
+    border-radius: 20px;
+    width: 200px;
+    right: -25px;
+    overflow: hidden;
+    display: none;
+}
+header .container .header_respon .menu_hover p{
+    color: var(--text-color);
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+header .container .header_respon .menu_hover .my_profile p:hover{
+  background-color: var(--main-color);
+  color: white;
+}
+header .container .header_respon .menu_hover .logout{
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: rgb(231 151 151);
+    cursor: pointer;
+}
+header .container .header_respon .menu_hover .logout:hover{
+
+    background-color: red;
+}
+header .container .header_respon .menu_hover .logout .logout_icon{
+    font-size: 20px;
+    color: white;
+}
+header .container .header_respon .menu_hover .logout p{
+padding: 0;
+color: white;
+}
+

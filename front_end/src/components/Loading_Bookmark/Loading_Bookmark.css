@@ -1,0 +1,134 @@
+/* 
+.bookmark-checkbox {
+  display: inline-block;
+  margin: -8px;
+  margin-top: -3px;
+  margin-bottom: -10px;
+  margin-right: -5px;
+}
+
+.bookmark-checkbox__input {
+  display: none;
+}
+
+.bookmark-checkbox__label {
+  cursor: pointer;
+}
+
+.bookmark-checkbox__icon {
+  height: 26px;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.3s, fill 0.3s;
+}
+
+.bookmark-checkbox__icon-back {
+  stroke: #333;
+  transition: transform 0.3s;
+}
+
+.bookmark-checkbox__icon-check {
+  stroke: #fff;
+  stroke-dasharray: 16;
+  stroke-dashoffset: 16;
+  transition: stroke-dashoffset 0.3s, transform 0.3s;
+  transform: translateX(2px);
+}
+
+.bookmark-checkbox__input:checked
+  + .bookmark-checkbox__label
+  .bookmark-checkbox__icon {
+  fill: #ff5a5f;
+}
+
+.bookmark-checkbox__input:checked
+  + .bookmark-checkbox__label
+  .bookmark-checkbox__icon-back {
+  stroke: #ff5a5f;
+  transform: scale(1.1);
+  animation: bookmark-pop 0.4s ease;
+}
+
+.bookmark-checkbox__input:checked
+  + .bookmark-checkbox__label
+  .bookmark-checkbox__icon-check {
+  stroke-dashoffset: 0;
+  transition-delay: 0.2s;
+}
+
+@keyframes bookmark-pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+
+.bookmark-checkbox__icon-check {
+  stroke-dasharray: 16;
+  stroke-dashoffset: 16;
+  transition: stroke-dashoffset 0.3s, transform 0.3s;
+  transform: translateX(2px);
+}
+
+.bookmark-checkbox__input:checked + .bookmark-checkbox__label .bookmark-checkbox__icon-check {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.6s ease-in-out;
+}
+
+.bookmark-checkbox__input:not(:checked) + .bookmark-checkbox__label .bookmark-checkbox__icon-check {
+  stroke-dashoffset: 16;
+  transition: stroke-dashoffset 0.6s ease-in-out;
+} */
+
+.bookmark-checkbox {
+  display: inline-block;
+  margin: -8px;
+  margin-top: -3px;
+  margin-bottom: -10px;
+  margin-right: -5px;
+}
+
+.bookmark-checkbox__label {
+  cursor: pointer;
+}
+
+.bookmark-checkbox__icon {
+  height: 26px;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.3s, fill 0.3s;
+}
+
+.bookmark-checkbox__icon-back {
+  stroke: #333;
+  fill: transparent;
+  animation: bookmark-fill 0.6s infinite alternate ease-in-out;
+}
+
+.bookmark-checkbox__icon-check {
+  stroke: #fff;
+  stroke-dasharray: 16;
+  stroke-dashoffset: 16;
+  transition: stroke-dashoffset 0.3s, transform 0.3s;
+  transform: translateX(2px);
+}
+
+@keyframes bookmark-fill {
+  0% {
+    fill: transparent;
+    stroke:  #04b;
+  }
+  100% {
+    fill: #04b;
+    stroke: transparent;
+  }
+}

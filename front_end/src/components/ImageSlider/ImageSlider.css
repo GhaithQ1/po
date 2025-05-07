@@ -1,0 +1,74 @@
+/* ImageSlider */
+.shoole {
+    width: 100%;
+    margin: auto;
+  }
+  .shoole .img_shoole{
+    outline: none;
+    position: relative;
+    cursor: pointer;
+
+  }
+
+  .shoole .img_shoole .transparent_layer{
+    position: absolute;
+    width: 95%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: end;
+    color: white;
+    padding: 5px 10px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 50%, #000 100%);
+    border-radius: 20px;
+    
+  }
+  .shoole .slick-list {
+    padding-top: 20px;
+  }
+
+  .shoole .img_shoole img {
+    width: 95%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 12px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  .shoole .img_shoole img.log{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    right: 20px;
+    top: 5px;
+    border: 2px solid var(--main-color);
+  }
+
+  @media(max-width:767px){
+    .shoole .img_shoole img {
+      width: 90px;
+      height: 90px;
+
+    }
+  }
+
+
+  /* تغيير لون النقاط عند التحديد */
+.slick-dots li.slick-active button:before {
+    color: var(--main-color); /* اللون الأحمر */
+  }
+
+  /* تغيير حجم النقاط */
+.slick-dots li button:before {
+    font-size: 12px; /* حجم النقاط */
+  }
+
+  
+/* تغيير شكل النقاط عند التمرير */
+.slick-dots li:hover button:before {
+    color: var(--main-color); /* اللون البرتقالي عند التمرير */
+  }
+  
+/* ImageSlider */

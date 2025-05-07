@@ -1,0 +1,116 @@
+.Create_Bost_choose_the_correct_answer{
+   flex: 2; 
+}
+.Create_Bost_choose_the_correct_answer .butin{
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+.Create_Bost_choose_the_correct_answer .butin button:nth-child(2){
+    padding: 10px 20px;
+    font-size: 16px;
+    /* margin-top: 15px; */
+    cursor: pointer;
+    background-color: var(--main-color);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    display: block;
+}
+.Create_Bost_choose_the_correct_answer h2{
+    padding-bottom: 15px;
+    color: var(--title-color);
+}
+.Create_Bost_choose_the_correct_answer .all_form{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding-bottom: 20px;
+}
+.Create_Bost_choose_the_correct_answer .form{
+    width: 100%;
+    display: flex
+;
+    flex-direction: column;
+    gap: 30px;
+}
+.Create_Bost_choose_the_correct_answer .form{
+
+}
+.Create_Bost_choose_the_correct_answer .form input{
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    border: none;
+    background-color: var(--box-color);
+    font-size: var(--text-size);
+    border: 2px solid transparent;
+    color:black;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    padding: 15px;
+}
+.Create_Bost_choose_the_correct_answer .form input:focus{
+    outline: none;
+    border: 2px solid var(--main-color);
+}
+.Create_Bost_choose_the_correct_answer .form .inpots{
+display: flex;
+align-items: center;
+flex-wrap: wrap;
+gap: 20px;
+}
+
+.Create_Bost_choose_the_correct_answer .form .inpots .div_error{
+    width: calc(50% - 10px);
+}
+.Create_Bost_choose_the_correct_answer .form .inpots input{
+    
+}
+.Create_Bost_choose_the_correct_answer .form .inpots .div_error:nth-child(1) input{
+    background-color: #bdd4bd;
+}
+.Create_Bost_choose_the_correct_answer .form .inpots .div_error:nth-child(2) input{
+    background-color: rgb(231 151 151);
+}
+.Create_Bost_choose_the_correct_answer .form .inpots .div_error:nth-child(3) input{
+    background-color: rgb(231 151 151);
+}
+.Create_Bost_choose_the_correct_answer .form .inpots .div_error:nth-child(4) input{
+    background-color: rgb(231 151 151);
+}
+
+.Create_Bost_choose_the_correct_answer .form .inpots .div_error:not(:first-child) input:focus{
+    border: 2px solid red;
+}
+.Create_Bost_choose_the_correct_answer .form .inpots input:nth-child(1):focus{
+    border: 2px solid green;
+}
+
+
+.add-question-btn {
+    background-color: white; /* أزرق فاتح */
+    color: var(--text-color);
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    transition: 0.3s ease;
+  }
+  
+  .add-question-btn:hover {
+    background-color: var(--main-color);
+    transform: translateY(-2px);
+    color: white;
+  }
+  
+  .add-question-btn .icon {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  

@@ -1,0 +1,59 @@
+.Create_Bost_Ifrem{
+    flex: 2;
+}
+
+.Create_Bost_Ifrem h2{
+    color: var(--title-color);
+    padding-bottom: 20px;
+}
+.Create_Bost_Ifrem .all_form{
+display: flex;
+flex-direction: column;
+gap: 20px;
+}
+.Create_Bost_Ifrem input{
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    border: none;
+    background-color: var(--box-color);
+    font-size: var(--text-size);
+    border: 2px solid transparent;
+    color: black;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    padding: 15px;
+    color: var(--text-color);
+}
+.Create_Bost_Ifrem textarea{
+    width: 100%;
+    height: 200px;
+    padding: 15px;
+    border-radius: 20px;
+    border: none;
+    background-color: var(--box-color);
+    font-size: var(--text-size);
+    border: 2px solid transparent;
+    color: var(--text-color);
+    resize: none;
+    overflow: auto;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    font-size: var(--text-size);
+}
+.Create_Bost_Ifrem input:focus,
+.Create_Bost_Ifrem textarea:focus{
+    outline: none;
+    border: 2px solid var(--main-color);
+}
+.Create_Bost_Ifrem button{
+    padding: 10px 20px;
+    font-size: 16px;
+    /* margin-top: 15px; */
+    cursor: pointer;
+    background-color: var(--main-color);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    margin-left: auto;
+    display: block;
+    margin-top: 20px;
+}

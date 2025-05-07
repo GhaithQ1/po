@@ -1,0 +1,102 @@
+.Create_Bost_Video_and_image{
+    flex: 2; 
+ }
+.Create_Bost_Video_and_image h2{
+    padding-bottom: 10px;
+    color: var(--title-color);
+ }
+
+.Create_Bost_Video_and_image .all_form{
+    
+ }
+.Create_Bost_Video_and_image .all_form .form{
+    
+ }
+.Create_Bost_Video_and_image .all_form .form .qes_error{
+    position: relative;
+ }
+
+ 
+ .Create_Bost_Video_and_image .all_form .form .qes_error textarea{
+     width: 100%;
+     height: 200px;
+     padding: 15px;
+     border-radius: 20px;
+     border: none;
+     background-color: var(--box-color);
+     font-size: var(--text-size);
+     border: 2px solid transparent;
+     color: var(--text-color);
+     resize: none ;
+     overflow: auto;
+     box-shadow: 0 2px 8px var(--shadow-color);
+  }
+ .Create_Bost_Video_and_image .all_form .form .qes_error textarea:focus{
+    outline: none;
+    border: 2px solid var(--main-color);
+  }
+
+  .Create_Bost_Video_and_image .all_form .form .qes_error .iconvideandimg{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+  }
+  .Create_Bost_Video_and_image .all_form .form .qes_error .iconvideandimg .icon_v_m{
+    font-size: 20px;
+    color: var(--icon-color);
+    transition: 0.3s;
+    cursor: pointer;
+  }
+  .Create_Bost_Video_and_image .all_form .form .qes_error .iconvideandimg .icon_v_m:hover{
+    color: var(--main-color);
+  }
+ .Create_Bost_Video_and_image > button{
+    padding: 10px 20px;
+    font-size: 16px;
+    /* margin-top: 15px; */
+    cursor: pointer;
+    background-color: var(--main-color);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    margin-left: auto;
+    display: block;
+    margin-top: 20px;
+    font-size: var(--text-size);
+ }
+
+
+ .img_vid_flex{
+    display: flex;
+    gap: 10px;
+ }
+
+
+ .all_form ._error{
+    color: red;
+    font-size: 14px;
+    padding: 0 0 5px 10px;
+ }
+
+ .img_vid_flex {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 15px;
+ }
+ 
+ .remove-btn {
+   position: absolute;
+   top: -8px;
+   right: -8px;
+   background: red;
+   color: white;
+   border: none;
+   border-radius: 50%;
+   width: 24px;
+   height: 24px;
+   cursor: pointer;
+   font-size: 18px;
+ }

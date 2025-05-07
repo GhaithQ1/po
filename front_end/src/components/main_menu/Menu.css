@@ -1,0 +1,134 @@
+.menu {
+    background-color: var(--box-color);
+    border-radius: 20px;
+    overflow: hidden;
+    flex: 1;
+    max-height: 580px;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    position: sticky;
+    top: 125px;
+    z-index: 100;
+}
+
+
+.menu .sidebar__list {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.menu .sidebar__list .navbar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    text-decoration: none;
+    width: 100%;
+    padding: 20px 40px;
+    position: relative;
+    transition: 0.3s all;
+    cursor: pointer;
+}
+
+.menu .sidebar__list .navbar .nav_icon {
+      font-size:20px;
+      color: var(--icon-color);
+}
+.menu .sidebar__list .icon_chats {
+      display: none;
+}
+@media(max-width:1190px){
+    .menu .sidebar__list .icon_chats {
+        display: flex;
+  }
+}
+
+.menu .sidebar__list .navbar p {
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.menu .sidebar__list .navbar:hover{
+    background-color: var(--body-color);
+    transition: 0.3s all;
+}
+.menu .sidebar__list .navbar::after{
+    content: '';
+    width: 7px;
+    height: 0;
+    background-color: var(--main-color);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transition: 0.3s all;
+}
+.menu .sidebar__list .navbar:hover::after{
+height: 100%;
+}
+.menu .sidebar__list .navbar:hover .nav_icon{
+color: var(--main-color);
+}
+.menu .sidebar__list .active {
+    background-color: var(--body-color);
+    color: var(--main-color);
+}
+
+.menu .sidebar__list .active .nav_icon {
+    color: var(--main-color);
+}
+
+.menu .sidebar__list .active p {
+    color: var(--main-color);
+}
+
+.menu .sidebar__list .active::after {
+    content: '';
+    width: 7px;
+    height: 100%;
+    background-color: var(--main-color);
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+
+@media(max-width:1190px){
+    .menu {
+        border-radius: 0;
+        top: 0;
+        width: 100vw;
+        transform: translateX(-65px);
+        box-shadow: 0 2px 8px transparent;
+    }  
+    body.chat-page .menu {
+        transform: translateX(0);
+      }
+
+    .menu .sidebar__list {
+        padding:5px 0;
+        flex-direction: row;
+    }
+    .menu .sidebar__list .navbar {
+        padding:5px;
+        justify-content: space-around;
+    }
+    .menu .sidebar__list .navbar p {
+        display: none;
+    }
+    .menu .sidebar__list .navbar:hover{
+        background-color: transparent;
+    }
+    .menu .sidebar__list .navbar::after{
+        content: '';
+        background-color: transparent;
+    }
+    .menu .sidebar__list .active {
+        background-color:transparent;
+    }
+}
+
+@media(max-width:767px){
+    .menu {
+        transform: translateX(-10px);
+    }
+}

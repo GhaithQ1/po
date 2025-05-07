@@ -1,0 +1,402 @@
+.chat {
+  background-color: var(--box-color);
+  border-radius: 20px;
+  overflow: hidden;
+  flex: 1;
+  height: 600px;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  position: sticky;
+  top: 125px;
+}
+
+
+
+
+.chat h2 {
+  color: var(--title-color);
+  padding: 20px 20px 0 20px;
+}
+
+.chat form {
+
+  position: relative;
+  margin: 20px;
+}
+
+.chat form .search_icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 15px;
+  color: var(--text-color);
+}
+
+.chat form input {
+  width: 100%;
+  height: 100%;
+  padding: 15px 10px 15px 50px;
+  border-radius: 20px;
+  border: none;
+  background-color: var(--body-color);
+  font-size: var(--text-size);
+  border: 2px solid transparent;
+  color: var(--text-color);
+}
+
+.chat form input:focus {
+  outline: none;
+  border: 2px solid var(--main-color);
+}
+
+.chat .request {
+  display: flex;
+
+}
+
+.chat .request p {
+  width: 50%;
+  text-align: center;
+  padding-bottom: 5px;
+  position: relative;
+  border-bottom: 4px solid transparent;
+  cursor: pointer;
+  transition: 0.3s;
+  color: var(--text-color);
+}
+
+.chat .request p::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  height: 4px;
+  width: 0;
+  background-color: var(--main-color);
+  transition: 0.3s;
+}
+
+.chat .request p:hover::after {
+  width: 100%;
+}
+
+.chat .request .active {
+  border-bottom: 4px solid var(--main-color);
+}
+
+
+.chat .friends {
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  height: 70%;
+  overflow-y: auto;
+}
+
+.chat .friend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 10px 20px;
+  transition: 0.3s all;
+}
+
+
+.chat .friend:hover {
+  background-color: var(--body-color);
+}
+
+.chat .friend img {
+  width: 40px;
+  border-radius: 50%;
+}
+
+.chat .friend p {
+  color: var(--text-color);
+}
+
+@media(max-width:1190px) {
+  .chat {
+    display: none;
+  }
+
+  body.chat-page .chat {
+    display: block !important;
+    height: calc(100vh - 115px);
+    border-radius: 0;
+  }
+
+  body.chat-page .chat .friends {
+    height: 80%;
+  }
+}
+
+/* Chating */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 70%;
+  margin: auto;
+  background-color: var(--body-color);
+  /* display: none; */
+}
+
+.chat-container .chat-box {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scroll-behavior: smooth;
+  padding-top: 40px;
+  position: relative;
+}
+
+.chat-container .chat-box .search_icon {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  font-size: 25px;
+  color: var(--icon-color);
+  cursor: pointer;
+}
+
+.chat-container .message {
+  display: flex;
+  align-items: flex-end;
+  max-width: 80%;
+}
+
+.chat-container .message img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin: 0 10px;
+}
+
+.chat-container .message p {
+  padding: 10px 15px;
+  border-radius: 20px;
+  margin: 0;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+.chat-container .me {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.chat-container .me p {
+  background-color: var(--main-color);
+  color: #fff;
+}
+
+.chat-container .other {
+  align-self: flex-start;
+}
+
+.chat-container .other p {
+  background-color: #fff;
+}
+
+.chat-container .chat-input {
+  display: flex;
+
+}
+
+.chat-container .chat-input input {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  outline: none;
+  background-color: var(--box-color);
+}
+
+.chat-container .chat-input button {
+  margin-left: 10px;
+  padding: 10px 20px;
+  border: none;
+  background-color: var(--main-color);
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.show {
+  display: block;
+  /* يظهر لما تنضغط رسالة */
+}
+
+.hide {
+  display: none;
+}
+
+/* Chating */
+
+
+
+/* requsts */
+
+.the_requset {
+  display: flex;
+flex-direction: column;
+  gap: 20px;
+  padding: 10px;
+  height: 70%;
+  overflow-y: auto;
+}
+
+.the_requset .req {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--body-color);
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.the_requset .req .img_req {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.the_requset .req .img_req img {
+  width: 40px;
+  border-radius: 50%;
+}
+
+.the_requset .req .img_req p {
+  color: var(--text-color);
+  font-size: var(--text-size);
+}
+
+.the_requset .req .accept {
+  width: 100%;
+  padding-top: 15px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.the_requset .req .accept button {
+  padding: 10px 30px;
+  border: none;
+  border-radius: 20px;
+  background-color: var(--main-color);
+  color: #fff;
+  font-size: var(--text-size);
+  cursor: pointer;
+  transition: 0.3s all;
+}
+
+.the_requset .req .accept button:hover {
+  box-shadow: 0 0 8px var(--main-color);
+}
+
+.the_requset .req .accept button:nth-child(1) {
+  background-color: #fff;
+  color: black;
+}
+
+.the_requset .req .accept button:nth-child(1):hover {
+  box-shadow: 0 0 8px var(--shadow-color);
+}
+
+/* requsts */
+
+/* Send */
+
+.general {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px;
+  height: 70%;
+  overflow-y: auto;
+}
+
+.general .req {
+  display: flex;
+flex-direction: column;
+  background-color: var(--body-color);
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.general .req .img_req {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.general .req .img_req img {
+  width: 40px;
+  border-radius: 40px;
+}
+
+.general .req .img_req p {
+  color: var(--text-color);
+  font-size: var(--text-size);
+}
+
+/* .general .req .accept {
+  width: 100%;
+  padding-top: 15px;
+  display: flex;
+  justify-content: space-around;
+} */
+
+.general .req .accept button {
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  background-color: var(--main-color);
+  color: #fff;
+  font-size: var(--text-size);
+  cursor: pointer;
+  transition: 0.3s all;
+  display: block;
+  margin-left: auto;
+}
+
+.general .req .accept button:hover {
+  box-shadow: 0 0 8px var(--main-color);
+}
+.general .req .accept .sent:hover {
+  box-shadow: none;
+}
+
+
+/* Send */
+
+.chat .test{
+  height: 30%;
+}
+
+.chat .display_none{
+  display: none;
+}
+
+/* ================================= */
+
+
+.Emoji_input{
+  position: relative;
+  flex: 1;
+}
+
+
+.Emoji_input span {
+  position: absolute;
+  right: 7px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.emoji-picker-container input {
+  display: none;
+}

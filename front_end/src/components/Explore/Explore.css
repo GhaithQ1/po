@@ -1,0 +1,17 @@
+.explore{
+    padding:50px 0;
+}
+.explore .container{
+display: flex;
+gap: 40px;
+}
+
+@media(max-width:991px){
+    .explore{
+        padding: 0;
+    }
+    .explore .container{   
+        flex-direction: column;
+        justify-content: start;
+        }
+}

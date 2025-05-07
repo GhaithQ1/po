@@ -1,0 +1,144 @@
+.Create_Bost_True_Or_False{
+    flex: 2; 
+ }
+.Create_Bost_True_Or_False .butin{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+ }
+ .Create_Bost_True_Or_False .butin button:nth-child(2){
+     padding: 10px 20px;
+     font-size: 16px;
+     /* margin-top: 15px; */
+     cursor: pointer;
+     background-color: var(--main-color);
+     color: white;
+     border: none;
+     border-radius: 20px;
+     display: block;
+ }
+ .Create_Bost_True_Or_False h2{
+     padding-bottom: 15px;
+     color: var(--title-color);
+ }
+ .Create_Bost_True_Or_False .all_form{
+     display: flex;
+     flex-direction: column;
+     gap: 40px;
+     padding-bottom: 20px;
+ }
+ .Create_Bost_True_Or_False .form{
+     width: 100%;
+     display: flex
+ ;
+     flex-direction: column;
+     gap: 15px;
+ }
+ .Create_Bost_True_Or_False .form{
+ 
+ }
+ .Create_Bost_True_Or_False .form span{
+     width: 100%;
+     height: 100%;
+     border-radius: 20px;
+     border: none;
+     background-color: var(--box-color);
+     font-size: var(--text-size);
+     border: 2px solid transparent;
+     color:black;
+     box-shadow: 0 2px 8px var(--shadow-color);
+     padding: 15px;
+     text-align: center;
+     cursor: pointer;
+     transition: all 0.3s;
+ }
+ .Create_Bost_True_Or_False .form input{
+     width: 100%;
+     height: 100%;
+     border-radius: 20px;
+     border: none;
+     background-color: var(--box-color);
+     font-size: var(--text-size);
+     border: 2px solid transparent;
+     color:black;
+     box-shadow: 0 2px 8px var(--shadow-color);
+     padding: 15px;
+
+ }
+ .Create_Bost_True_Or_False .form input:focus{
+     outline: none;
+     border: 2px solid var(--main-color);
+ }
+ .Create_Bost_True_Or_False .form .inpots{
+ display: flex;
+ align-items: center;
+ flex-wrap: wrap;
+ gap: 10px;
+ }
+ .Create_Bost_True_Or_False .form .inpots span{
+ width: calc(50% - 10px);
+ }
+ .Create_Bost_True_Or_False .form .inpots span:nth-child(1){
+     background-color: #bdd4bd;
+ }
+ .Create_Bost_True_Or_False .form .inpots span:nth-child(1):hover{
+     background-color: green;
+     color: #fff;
+ }
+ .Create_Bost_True_Or_False .form .inpots span.active:nth-child(1){
+     background-color: green;
+     color: #fff;
+ }
+ .Create_Bost_True_Or_False .form .inpots span:nth-child(2){
+     background-color: rgb(231 151 151);
+ }
+ .Create_Bost_True_Or_False .form .inpots span:nth-child(2):hover{
+    background-color: red;
+    color: #fff;
+ }
+ 
+ .Create_Bost_True_Or_False .form .inpots span.active:nth-child(2){
+    background-color: red;
+    color: #fff;
+ }
+ .Create_Bost_True_Or_False .form .qes_error{
+position: relative;
+ }
+ .Create_Bost_True_Or_False .form .qes_error ._error{
+    color: red;
+    font-size: 14px;
+    /* margin: 0 0 5px 0; */
+    /* text-align: left; */
+    position: absolute;
+    left: 10px;
+    top: -20px;
+ }
+ 
+
+ .add-question-btn {
+    background-color: white; /* أزرق فاتح */
+    color: var(--text-color);
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    transition: 0.3s ease;
+  }
+  
+  .add-question-btn:hover {
+    background-color: var(--main-color);
+    transform: translateY(-2px);
+    color: white;
+  }
+  
+  .add-question-btn .icon {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  

@@ -1,0 +1,267 @@
+.bost_image_and_ward {
+  flex: 2;
+}
+
+.bost_image_and_ward h2 {
+  padding-bottom: 15px;
+  color: var(--title-color);
+}
+
+.bost_image_and_ward .form {}
+
+.bost_image_and_ward .form .input_image {}
+
+.bost_image_and_ward .form .input_ward {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  border: none;
+  background-color: var(--box-color);
+  font-size: var(--text-size);
+  border: 2px solid transparent;
+  color: var(--text-color);
+  box-shadow: 0 2px 8px var(--shadow-color);
+  padding: 15px
+}
+
+.bost_image_and_ward .unified_form {
+  display: flex;
+  /* flex-direction: column; */
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: end;
+}
+
+.bost_image_and_ward .form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 15px;
+  width: 100%;
+  align-items: start;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  padding: 50px 20px 20px 20px ;
+  border-radius: 20px;
+  position: relative;
+}
+
+.bost_image_and_ward .image-box {
+  width: 80%;
+  height: 250px;
+  border: 2px dashed #aaa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 8px;
+  background-color: var(--body-color);
+  position: relative;
+  margin: auto;
+}
+@media(max-width:991px){
+  .bost_image_and_ward .image-box {
+    width: 100%;
+    height: 250px;
+  }
+}
+
+.bost_image_and_ward .plus-sign {
+  font-size: 40px;
+  color: #999;
+}
+
+.bost_image_and_ward .preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bost_image_and_ward .input_ward {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.bost_image_and_ward .input_ward:focus {
+  outline: none;
+  border: 2px solid var(--main-color);
+}
+
+.bost_image_and_ward .submit_btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  /* margin-top: 15px; */
+  cursor: pointer;
+  background-color: var(--main-color);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  margin-left: auto;
+  display: block;
+}
+
+
+
+.bost_image_and_ward .word_error {
+  width: 100%;
+  position: relative;
+}
+.bost_image_and_ward .word_error ._error{
+  color: red;
+  font-size: 13px;
+  /* margin: 0 0 5px 0; */
+  /* text-align: left; */
+  position: absolute;
+  left: 10px;
+  top: -20px;
+}
+.bost_image_and_ward .audio-box .image_error,
+.bost_image_and_ward .image-box .image_error{
+  font-size: 15px;
+  /* margin: 0 0 5px 0; */
+  /* text-align: left; */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(231 151 151);
+  width: 100%;
+  height: 100%;
+  display: flex
+;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+}
+
+
+.remove_form_btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.audio-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  height: 90px;
+  border: 2px dashed #aaa;
+  border-radius: 8px;
+  /* background-color: #f0f8ff; */
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  margin: auto;
+  position: relative;
+}
+
+.audio-box:hover {
+  /* background-color: #e6f2ff; */
+  border-color: var(--main-color);
+}
+
+.upload-placeholder {
+  text-align: center;
+  color: #333;
+}
+
+.upload-icon {
+  font-size: 20px;
+  color: #007bff;
+}
+
+.upload-text {
+  font-size: 16px;
+  color: #555;
+}
+
+.audio-name {
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+}
+
+
+
+/* ====================================== */
+
+.add_form_btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--main-color); /* لون أخضر مميز */
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  /* box-shadow: 0 4px 6px var(--main-color); */
+}
+
+.add_form_btn:hover {
+  /* background: #2c8c47;  */
+  /* box-shadow: 0 6px 8px rgba(44, 140, 71, 0.5); */
+}
+
+.add_form_btn:active {
+  transform: scale(0.95); /* تأثير الضغط */
+}
+
+.add_form_btn:focus {
+  outline: none;
+}
+
+.add_form_btn .icon {
+  font-size: 20px;
+  margin-right: 8px; /* مساحة بين الأيقونة والنص */
+}
+
+
+
+.add-question-btn {
+  background-color: white; /* أزرق فاتح */
+  color: var(--text-color);
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  transition: 0.3s ease;
+}
+
+.add-question-btn:hover {
+  background-color: var(--main-color);
+  transform: translateY(-2px);
+  color: white;
+}
+
+.add-question-btn .icon {
+  font-size: 18px;
+  font-weight: bold;
+}
+.bost_image_and_ward .butin{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
