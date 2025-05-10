@@ -14,7 +14,7 @@
   height: 12px;
   width: 12px;
   margin-right: 10px;
-  border-radius: 10px;
+  border-radius: var(--border-radius);
   background-color: var(--body-color);
   animation: pulse 0.8s infinite ease-in-out;
 }

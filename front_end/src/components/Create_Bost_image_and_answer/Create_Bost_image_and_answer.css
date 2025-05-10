@@ -6,6 +6,17 @@
     color: var(--title-color);
 }
 .Create_Bost_image_and_answer .form{
+display: flex
+;
+    gap: 10px;
+    margin-bottom: 15px;
+    width: 100%;
+    padding: 20px;
+    background-color: var(--box-color);
+    border-radius: var(--border-radius);
+    position: relative;
+}
+.Create_Bost_image_and_answer .form .remove_form_btn{
 
 }
 .Create_Bost_image_and_answer .form .input_image{
@@ -13,7 +24,7 @@
 }
 .Create_Bost_image_and_answer .form .input_ward{
     width: 100%;
-    border-radius: 20px;
+    border-radius: var(--border-radius);
     border: none;
     background-color: var(--box-color);
     font-size: var(--text-size);
@@ -47,7 +58,7 @@
     align-items: center;
     cursor: pointer;
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     background-color: var(--body-color);
     position: relative;
   }
@@ -112,7 +123,7 @@
     background-color: var(--main-color);
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: var(--border-radius);
     margin-left: auto;
     display: block;
   }
@@ -157,7 +168,7 @@
     padding: 10px 20px;
     font-size: 16px;
     font-weight: 600;
-    border-radius: 12px;
+    border-radius: var(--border-radius);
     cursor: pointer;
     display: inline-flex;
     align-items: center;

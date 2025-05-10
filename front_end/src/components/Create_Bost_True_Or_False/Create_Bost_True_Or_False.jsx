@@ -36,6 +36,9 @@ const Create_Bost_True_Or_False = () => {
     }, 0);
   };
 
+    const handleRemoveForm = (index) => {
+    setQuestions((prevForms) => prevForms.filter((_, idx) => idx !== index)); // إزالة النموذج
+  };
   // إرسال البيانات إلى الخادم
   const handleSubmit = () => {
     axios.post('http://localhost:8000/api/v2/post/post_3', {
@@ -70,6 +73,13 @@ const Create_Bost_True_Or_False = () => {
             {questions.map((question, index) => {
               return (
                 <div key={index} className="form">
+                                  <button
+                  type="button"
+                  className="remove_form_btn"
+                  onClick={() => handleRemoveForm(index)}
+                >
+                  X
+                </button>
                   <div className="diverrors">
                     {formErrors[`questions[${index}].question`] && (
                       <p className="errors">{formErrors[`questions[${index}].question`]}</p>

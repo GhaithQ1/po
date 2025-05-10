@@ -78,10 +78,24 @@ const ChatBetweenUsers = () => {
   useEffect(() => {
     if (!user1Id || !userById) return;
 
+    // Create a unique chat ID for caching
+    const chatCacheKey = `chat_${user1Id}_${userById._id}`;
+    const lastMessageTimeKey = `last_message_time_${user1Id}_${userById._id}`;
+    
+    // Get the last message timestamp to check for new messages
+    const getLastMessageTime = () => {
+      if (chat.length === 0) return 0;
+      const lastMessage = chat[chat.length - 1];
+      return lastMessage.timestamp || 0;
+    };
+
     const fetchChat = async () => {
       try {
+        // Check if we need to fetch new data
+        const lastMessageTime = localStorage.getItem(lastMessageTimeKey) || 0;
+        
         const res = await axios.get(
-          `http://localhost:8000/api/v2/chat/${user1Id}/${userById}`,
+          `http://localhost:8000/api/v2/chat/${user1Id}/${userById._id}`,
           {
             headers: {
               Authorization: `Bearer ${cookies.token}`,
@@ -89,8 +103,22 @@ const ChatBetweenUsers = () => {
           }
         );
 
-        setChat(res.data.data.messages);
-        setLoadingMain(false)
+        const newMessages = res.data.data.messages;
+        
+        // Only update state if there are new messages
+        if (JSON.stringify(newMessages) !== JSON.stringify(chat)) {
+          setChat(newMessages);
+          
+          // Cache the messages
+          localStorage.setItem(chatCacheKey, JSON.stringify(newMessages));
+          
+          // Update the last message timestamp
+          if (newMessages.length > 0) {
+            localStorage.setItem(lastMessageTimeKey, getLastMessageTime());
+          }
+        }
+        
+        setLoadingMain(false);
       } catch (err) {
         if (err.response?.data?.errors) {
           const formattedErrors = {};
@@ -102,10 +130,20 @@ const ChatBetweenUsers = () => {
       }
     };
 
+    // Try to load from cache first
+    const cachedChat = localStorage.getItem(chatCacheKey);
+    if (cachedChat) {
+      setChat(JSON.parse(cachedChat));
+      setLoadingMain(false);
+    }
+
+    // Then fetch fresh data
     fetchChat();
-    const interval = setInterval(fetchChat, 1000);
+    
+    // Use a more reasonable polling interval (3 seconds instead of 1)
+    const interval = setInterval(fetchChat, 3000);
     return () => clearInterval(interval);
-  }, [user1Id, userById]);
+  }, [user1Id, userById, cookies.token]);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -116,7 +154,7 @@ const ChatBetweenUsers = () => {
         `http://localhost:8000/api/v2/chat`,
         {
           user1Id,
-          user2Id: userById,
+          user2Id: userById._id,
           content: input,
         },
         {
@@ -136,11 +174,27 @@ const ChatBetweenUsers = () => {
   return (
     <div className="chat-container">
       {loadingMain ? <Loading_main/> : ( <div className="chat-box">
-        <FontAwesomeIcon
+        <div className="header_chat">
+          <div className="user_img_name">
+<img
+  src={
+    userById.profilImage
+      ? userById.profilImage.startsWith("http")
+        ? userById.profilImage
+        : `http://localhost:8000/user/${userById.profilImage}`
+      : "/image/pngegg.png"
+  }
+  alt={`Image of ${userById.name}`}
+/>
+            <p>{userById?.name}</p>
+          </div>
+         <FontAwesomeIcon
           className="search_icon"
           onClick={() => setShowChat(false)}
           icon={faTimes}
-        />
+        /> 
+        </div>
+        
         {chat.map((msg, index) => (
           <div
             key={index}

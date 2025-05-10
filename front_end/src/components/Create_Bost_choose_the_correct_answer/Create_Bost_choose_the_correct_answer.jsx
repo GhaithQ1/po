@@ -27,6 +27,10 @@ const Create_Bost_choose_the_correct_answer = () => {
     });
   };
 
+    const handleRemoveForm = (index) => {
+    setQuestions((prevForms) => prevForms.filter((_, idx) => idx !== index)); // إزالة النموذج
+  };
+
   const handleInputChange = (index, field, value) => {
     const updatedQuestions = [...questions];
     updatedQuestions[index][field] = value;
@@ -112,8 +116,16 @@ const Create_Bost_choose_the_correct_answer = () => {
           <h2>Create Bost Choose The Correct Answer</h2>
 
           <div className="all_form">
+
             {questions.map((q, idx) => (
               <div className="form" key={idx}>
+                                            <button
+                  type="button"
+                  className="remove_form_btn"
+                  onClick={() => handleRemoveForm(idx)}
+                >
+                  X
+                </button>
                 <div className="question_error">
                   {errors[`questions[${idx}]`] && (
                     <p className='errors'>{errors[`questions[${idx}]`]}</p>

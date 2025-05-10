@@ -12,7 +12,7 @@
     width: 150px;
     height: 150px;
     object-fit: cover; 
-    border-radius: 10px; 
+    border-radius: var(--border-radius); 
     display: block;
     margin: 10px auto;
   }
@@ -20,30 +20,25 @@
   .update_profile .image-container {
     text-align: center;
   }
-  
-  .update_profile form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-width: 400px;
-    margin: auto;
-  }
+
   
   .update_profile input, textarea {
     padding: 8px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     width: 100%;
   }
   
   .update_profile button {
-    background-color: #007bff;
+    background-color: var(--main-color) !important;
     color: white;
     padding: 10px;
     border: none;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     cursor: pointer;
     transition: 0.3s;
+    display: block;
+    margin-left: auto;
   }
   
   .update_profile button:hover {
@@ -55,7 +50,7 @@
     width: 150px;
     height: 150px;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     display: block;
     margin: 10px auto;
   }
@@ -68,25 +63,16 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    max-width: 400px;
-    margin: auto;
+    max-width: 100% !important;
+    margin: 0 !important;
   }
   
   .update_profile input, textarea {
     padding: 8px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
   }
   
-  .update_profile button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
   
   .update_profile button:hover {
     background-color: #0056b3;
@@ -96,7 +82,7 @@
     width: 150px;
     height: 150px;
     object-fit: cover;
-    border-radius: 10px;
+     border-radius: var(--border-radius);
     display: block;
     margin: 10px auto;
   }
@@ -113,10 +99,31 @@
     margin: auto;
   }
   
-  .update_profile  input, textarea {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  .update_profile  input {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--border-radius);
+    border: none;
+    background-color: var(--box-color);
+    font-size: var(--text-size);
+    border: 2px solid transparent;
+    color: black;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    padding: 15px;
+  }
+  .update_profile textarea {
+     width: 100%;
+     height: 200px;
+     padding: 15px;
+     border-radius: var(--border-radius);
+     border: none;
+     background-color: var(--box-color);
+     font-size: var(--text-size);
+     border: 2px solid transparent;
+     color: var(--text-color);
+     resize: none ;
+     overflow: auto;
+     box-shadow: 0 2px 8px var(--shadow-color);
   }
   
   .update_profile  button {
@@ -124,7 +131,7 @@
     color: white;
     padding: 10px;
     border: none;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     cursor: pointer;
     transition: 0.3s;
   }
@@ -133,14 +140,13 @@
     background-color: #0056b3;
   }
 
-  .update_profile  .image-upload {
-    width: 150px;
-    height: 150px;
+  .update_profile .image-upload {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 2px dashed #ccc;
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -157,3 +163,8 @@
     color: #ccc;
     font-weight: bold;
   }
+
+ .update_profile  .img_lod_and_input{
+  display: flex;
+  gap: 20px;
+ }

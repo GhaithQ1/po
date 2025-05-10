@@ -12,16 +12,16 @@
 .Create_Bost_Video_and_image .all_form .form{
     
  }
-.Create_Bost_Video_and_image .all_form .form .qes_error{
+.Create_Bost_Video_and_image .all_form .form{
     position: relative;
  }
 
  
- .Create_Bost_Video_and_image .all_form .form .qes_error textarea{
+ .Create_Bost_Video_and_image .all_form .form textarea{
      width: 100%;
      height: 200px;
      padding: 15px;
-     border-radius: 20px;
+     border-radius: var(--border-radius);
      border: none;
      background-color: var(--box-color);
      font-size: var(--text-size);
@@ -31,12 +31,12 @@
      overflow: auto;
      box-shadow: 0 2px 8px var(--shadow-color);
   }
- .Create_Bost_Video_and_image .all_form .form .qes_error textarea:focus{
+ .Create_Bost_Video_and_image .all_form .form textarea:focus{
     outline: none;
     border: 2px solid var(--main-color);
   }
 
-  .Create_Bost_Video_and_image .all_form .form .qes_error .iconvideandimg{
+  .Create_Bost_Video_and_image .all_form .form .iconvideandimg{
     display: flex;
     align-items: center;
     gap: 10px;
@@ -44,13 +44,13 @@
     bottom: 20px;
     right: 20px;
   }
-  .Create_Bost_Video_and_image .all_form .form .qes_error .iconvideandimg .icon_v_m{
+  .Create_Bost_Video_and_image .all_form .form .iconvideandimg .icon_v_m{
     font-size: 20px;
     color: var(--icon-color);
     transition: 0.3s;
     cursor: pointer;
   }
-  .Create_Bost_Video_and_image .all_form .form .qes_error .iconvideandimg .icon_v_m:hover{
+  .Create_Bost_Video_and_image .all_form .form .iconvideandimg .icon_v_m:hover{
     color: var(--main-color);
   }
  .Create_Bost_Video_and_image > button{
@@ -61,7 +61,7 @@
     background-color: var(--main-color);
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: var(--border-radius);
     margin-left: auto;
     display: block;
     margin-top: 20px;

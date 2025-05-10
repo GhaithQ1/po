@@ -1,6 +1,6 @@
 .menu {
     background-color: var(--box-color);
-    border-radius: 20px;
+    border-radius: var(--border-radius);
     overflow: hidden;
     flex: 1;
     max-height: 580px;

@@ -20,7 +20,7 @@
   bottom: 0;
   width: 0.074em;
   height: 0.2777em;
-  border-radius: 0.0555em;
+    border-radius: var(--border-radius);
   background-color: transparent;
   -webkit-transform-origin: center -0.2222em;
   -ms-transform-origin: center -0.2222em;

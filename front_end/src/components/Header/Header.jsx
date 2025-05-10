@@ -84,16 +84,17 @@ const Header = () => {
           </form>
 
           <div className='profile' onClick={handleProfileClick} ref={commentRef}>
-            <img
-              src={
-                MyData.googleId
-                  ? MyData.profilImage || "/image/pngegg.png"
-                  : MyData.profilImage
-                    ? `http://localhost:8000/user/${MyData.profilImage}`
-                    : "/image/pngegg.png"
-              }
-              alt={`Image of ${MyData.name}`}
-            />
+<img
+  src={
+    MyData.profilImage
+      ? MyData.profilImage.startsWith("http")
+        ? MyData.profilImage
+        : `http://localhost:8000/user/${MyData.profilImage}`
+      : "/image/pngegg.png"
+  }
+  alt={`Image of ${MyData.name}`}
+/>
+
             <p>{MyData.name}</p>
 
             <div

@@ -14,11 +14,11 @@ import { useUser } from '../Context';
 
 const Chat = () => {
   const { setUserById } = useUser();
-  const { userTheme ,setUserTheme} = useUser();
+  const { userTheme, setUserTheme } = useUser();
   const [cookies] = useCookies(["token"]);
 
   const [activeTab, setActiveTab] = useState('Primary');
-  const {showChat, setShowChat} = useUser();
+  const { showChat, setShowChat } = useUser();
   const [sentRequests, setSentRequests] = useState({});
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -34,7 +34,7 @@ const Chat = () => {
 
 
 
-// ====================================================
+  // ====================================================
 
   const API = 'http://localhost:8000/api/v2';
 
@@ -48,26 +48,64 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
-    axios.get(`${API}/auth/get_date_my`, headers)
-      .then(res => {
-        const data = res.data.data;
-        setMyData(data);
-        setFriendRequests(data.Friend_requests);
-        setFriends(data.friends);
-        console.log(data)
-      })
-      .catch(console.error)
-      .finally(() => setLoadingRequests(false));
-  }, [loadingRequests]);
+    // Check if we have cached data and it's not expired (less than 5 minutes old)
+    const cachedData = JSON.parse(localStorage.getItem('chatData'));
+    const cachedTime = localStorage.getItem('chatDataTimestamp');
+    const currentTime = new Date().getTime();
+    const isDataFresh = cachedTime && (currentTime - cachedTime < 5 * 60 * 1000);
+    
+    if (cachedData && isDataFresh && !loadingRequests) {
+      // Use cached data if it exists and is fresh
+      setMyData(cachedData);
+      setFriendRequests(cachedData.Friend_requests);
+      setFriends(cachedData.friends);
+      setLoadingRequests(false);
+    } else {
+      // Fetch new data if no cache or cache is stale
+      axios.get(`${API}/auth/get_date_my`, headers)
+        .then(res => {
+          const data = res.data.data;
+          setMyData(data);
+          setFriendRequests(data.Friend_requests);
+          setFriends(data.friends);
+          
+          // Cache the data
+          localStorage.setItem('chatData', JSON.stringify(data));
+          localStorage.setItem('chatDataTimestamp', currentTime.toString());
+        })
+        .catch(console.error)
+        .finally(() => setLoadingRequests(false));
+    }
+  }, [cookies.token, loadingRequests]); // Only depend on token and explicit reloads
 
   useEffect(() => {
+    if (searchTerm.trim() === '') {
+      setAllUsers([]);
+      return;
+    }
+    
     const delayDebounce = setTimeout(() => {
-      axios.get(`${API}/user?name=${searchTerm}`, headers)
-        .then(res => setAllUsers(res.data.data))
-        .catch(console.error);
+      // Check if we have cached search results for this term
+      const cachedSearches = JSON.parse(localStorage.getItem('chatSearches') || '{}');
+      
+      if (cachedSearches[searchTerm]) {
+        setAllUsers(cachedSearches[searchTerm]);
+      } else {
+        axios.get(`${API}/user?name=${searchTerm}`, headers)
+          .then(res => {
+            const results = res.data.data;
+            setAllUsers(results);
+            
+            // Cache the search results
+            const updatedCache = { ...cachedSearches, [searchTerm]: results };
+            localStorage.setItem('chatSearches', JSON.stringify(updatedCache));
+          })
+          .catch(console.error);
+      }
     }, 400);
+    
     return () => clearTimeout(delayDebounce);
-  }, [searchTerm]);
+  }, [searchTerm, cookies.token]);
 
   useEffect(() => {
     const savedRequests = JSON.parse(localStorage.getItem('sentRequests')) || {};
@@ -104,16 +142,16 @@ const Chat = () => {
 
 
 
-  
-    useEffect(() => {
-      const ff = localStorage.getItem("theme")
-      if(ff === "dark"){
-        setUserTheme(true)
-      }else{
-        setUserTheme(false)
-      }
 
-    }, [userTheme]);
+  useEffect(() => {
+    const ff = localStorage.getItem("theme")
+    if (ff === "dark") {
+      setUserTheme(true)
+    } else {
+      setUserTheme(false)
+    }
+
+  }, [userTheme]);
 
   // ============================================================
   return (
@@ -147,20 +185,20 @@ const Chat = () => {
       {activeTab === 'Primary' && !showChat && (
         <div className="friends">
           {friends?.length ? friends.map(({ friend }, i) => (
-            <div className="friend" key={i} onClick={() => { setShowChat(true); setUserById(friend._id); }}>
-          <img
-              src={
-                friend.googleId
-                  ? friend.profilImage || "/image/pngegg.png"
-                  : friend.profilImage
-                    ? `http://localhost:8000/user/${friend.profilImage}`
+            <div className="friend" key={i} onClick={() => { setShowChat(true); setUserById(friend); }}>
+              <img
+                src={
+                  friend?.profilImage
+                    ? friend.profilImage.startsWith("http")
+                      ? friend.profilImage
+                      : `http://localhost:8000/user/${friend.profilImage}`
                     : "/image/pngegg.png"
-              }
-              alt={`Image of ${friend.name}`}
-            />
-              <p>{friend.name}</p>
+                }
+                alt={`Image of ${friend?.name}`}
+              />
+              <p>{friend?.name}</p>
             </div>
-          )) : <img style={{margin: "auto" , width:"70%"}} src={userTheme  ?"/image/no-friend-requests-found (2).png" :  '/image/no-friend-requests-found (1).png'}/>}
+          )) : <img style={{ margin: "auto", width: "70%" }} src={userTheme ? "/image/no-friend-requests-found (2).png" : '/image/no-friend-requests-found (1).png'} />}
         </div>
       )}
 
@@ -171,16 +209,16 @@ const Chat = () => {
           {friendRequests?.length ? friendRequests.map(({ friend }, i) => (
             <div className="req" key={i}>
               <div className="img_req">
-              <img
-              src={
-                friend.googleId
-                  ? friend.profilImage || "/image/pngegg.png"
-                  : friend.profilImage
-                    ? `http://localhost:8000/user/${friend.profilImage}`
-                    : "/image/pngegg.png"
-              }
-              alt={`Image of ${friend.name}`}
-            />
+                <img
+                  src={
+                    friend.profilImage
+                      ? friend.profilImage.startsWith("http")
+                        ? friend.profilImage
+                        : `http://localhost:8000/user/${friend.profilImage}`
+                      : "/image/pngegg.png"
+                  }
+                  alt={`Image of ${friend.name}`}
+                />
                 <p>{friend.name}</p>
               </div>
               <div className="accept">
@@ -188,27 +226,27 @@ const Chat = () => {
                 <button onClick={() => acceptRequest(friend._id)}>Accept</button>
               </div>
             </div>
-          )) : <img style={{margin: "auto" , width:"70%"}} src={userTheme ?"/image/no-friendship-requests (1).png" :  '/image/no-friendship-requests.png'}/>}
+          )) : <img style={{ margin: "auto", width: "70%" }} src={userTheme ? "/image/no-friendship-requests (1).png" : '/image/no-friendship-requests.png'} />}
         </div>
       )}
 
       {activeTab === 'General' && (
         <div className="general">
           {allUsers?.length ? allUsers.filter(user => user._id !== myData?._id).map((user, i) => {
-            const isFriend = friends?.some(f => f.friend._id === user._id);
+            const isFriend = friends?.some(f => f.friend?._id === user?._id);
             return !isFriend && (
               <div key={i} className="req">
                 <div className="img_req">
-                <img
-              src={
-                user.googleId
-                  ? user.profilImage || "/image/pngegg.png"
-                  : user.profilImage
-                    ? `http://localhost:8000/user/${user.profilImage}`
-                    : "/image/pngegg.png"
-              }
-              alt={`Image of ${user.name}`}
-            />
+                  {/* <img
+                    src={
+                      user.profilImage
+                        ? user.profilImage.startsWith("http")
+                          ? user.profilImage
+                          : `http://localhost:8000/user/${user.profilImage}`
+                        : "/image/pngegg.png"
+                    }
+                    alt={`Image of ${user.name}`}
+                  /> */}
                   <p>{user.name}</p>
                 </div>
                 <div className="accept">

@@ -37,7 +37,7 @@ post_routes.route("/post_1")
 .post(check_login,check_user_role("employee","admin"),uploadImages,resizeImages,processAudioFile,createPost_1_V,createPost_1)
 
 post_routes.route("/post_2")
-.post(check_login,createPost_2_V,createPost_2)
+.post(check_login,check_user_role("employee","admin"),createPost_2_V,createPost_2)
 
 post_routes.route("/post_2_chick")
 .post(check_login,checkPost_2)

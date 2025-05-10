@@ -11,7 +11,8 @@ import {
   faBookmark,
   faChevronLeft,
   faChevronRight,
-  faTrashAlt  
+  faTrashAlt,
+  faEllipsisVertical, faTrash
 } from "@fortawesome/free-solid-svg-icons";
 import { useCookies } from "react-cookie";
 import { Relod_post } from "../Relod_post/Relod_post";
@@ -67,8 +68,8 @@ const Profile = () => {
 
   const [relod_Bookmark, setrelod_Bookmark] = useState(false);
 
-  const [Deleting_Please , setDeleting_Please] = useState(false)
-  const [Confirm_deletionn , setConfirm_deletionn] = useState(false)
+  const [Deleting_Please, setDeleting_Please] = useState(false)
+  const [Confirm_deletionn, setConfirm_deletionn] = useState(false)
 
   useEffect(() => {
     axios
@@ -103,12 +104,12 @@ const Profile = () => {
         setRelod_likee(false);
         setrelod_1(false);
         setrelod_coment(false);
-        
+
       })
       .catch((error) => {
         console.error("Error fetching data", error);
       });
-  }, [user1Id, likeds, NewComment , relod_Bookmark , Deleting_Please]);
+  }, [user1Id, likeds, NewComment, relod_Bookmark, Deleting_Please]);
 
   // =========================================
 
@@ -179,7 +180,7 @@ const Profile = () => {
       }
     };
     fetchMyData();
-  }, [lod, relod ,relod_Bookmark, bookId ]);
+  }, [lod, relod, relod_Bookmark, bookId]);
 
   const bookMarks = async (id) => {
     try {
@@ -337,10 +338,10 @@ const Profile = () => {
 
   // ======================================
 
- 
-  const [Confirm_deletionnID , setConfirm_deletionnID] = useState("")
 
-  
+  const [Confirm_deletionnID, setConfirm_deletionnID] = useState("")
+
+
 
   const Delete_Post = async () => {
     try {
@@ -359,32 +360,40 @@ const Profile = () => {
   };
 
 
+  const [showMenus, setShowMenus] = useState({});
+  const toggleMenu = (event, id) => {
+    setShowMenus(prevState => ({
+      ...prevState,
+      [id]: !prevState[id]
+    }));
+  };
+
 
   return (
     <>
       <div className="home">
         <div className="container">
           {Confirm_deletionn ? (<div className="Confirm_deletion" >
-          <div className="Confirm_delet">
-            <div className="card-content">
-              <p className="card-heading">Delete post ?</p>
-              {Deleting_Please ? <p className="card-description">Deleting Please wait....</p> : <p className="card-description">Are you sure you want to delete this post ? It cannot be recovered after deletion !</p>}
-              
+            <div className="Confirm_delet">
+              <div className="card-content">
+                <p className="card-heading">Delete post ?</p>
+                {Deleting_Please ? <p className="card-description">Deleting Please wait....</p> : <p className="card-description">Are you sure you want to delete this post ? It cannot be recovered after deletion !</p>}
+
+              </div>
+              <div className="card-button-wrapper">
+                <button className="card-button secondary" onClick={() => setConfirm_deletionn(false)}>Cancel</button>
+                <button className="card-button primary" onClick={Delete_Post}>Delete</button>
+              </div>
+              <button className="exit-button" onClick={() => setConfirm_deletionn(false)}>
+                <svg height="20px" viewBox="0 0 384 512">
+                  <path
+                    d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
+                  ></path>
+                </svg>
+              </button>
             </div>
-            <div className="card-button-wrapper">
-              <button className="card-button secondary" onClick={() => setConfirm_deletionn(false)}>Cancel</button>
-              <button className="card-button primary" onClick={Delete_Post}>Delete</button>
-            </div>
-            <button className="exit-button" onClick={ ()=> setConfirm_deletionn(false)}>
-              <svg height="20px" viewBox="0 0 384 512">
-                <path
-                  d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
-                ></path>
-              </svg>
-            </button>
-          </div>
-          </div>): null}
-          
+          </div>) : null}
+
           <Menu />
 
           <div className="main_profile_post">
@@ -404,29 +413,33 @@ const Profile = () => {
                     />
                   </div>
                   <div className="profile_all">
-                    <img
-                      src={
-                        MyData.profilImage
-                          ? `http://localhost:8000/user/${MyData.profilImage}`
-                          : "/image/pngegg.png"
-                      }
-                      alt={`Image of ${MyData.name}`}
-                    />
+<img
+  src={
+    MyData.profilImage
+      ? MyData.profilImage.startsWith("http")
+        ? MyData.profilImage
+        : `http://localhost:8000/user/${MyData.profilImage}`
+      : "/image/pngegg.png"
+  }
+  alt={`Image of ${MyData.name}`}
+/>
+                    <h2>{MyData.name}</h2>
                     <div className="info_me">
-                      <h2>{MyData.name}</h2>
-                      {MyData.address ? <span>{MyData.address}</span> : null}
-                      {MyData.phone ? <span>{MyData.phone}</span> : null}
-                      <span>{MyData.email}</span>
+                      <h3>Information:</h3>
+                      {MyData.address ? <p><span>Addres: </span> {MyData.address}</p> : null}
+                      {MyData.phone ? <p><span>Phone: </span> {MyData.phone}</p> : null}
+                      <p><span>Email: </span> {MyData.email}</p>
                     </div>
 
-                    <button onClick={()=> Navigate("/update_profile")}>Update</button>
-                  </div>                  
+                    <button onClick={() => Navigate("/update_profile")}>Update</button>
+                  </div>
                 </div>
                 {MyData.description && MyData.role === "employee" ? (
-                    <div className="description_profile">
-                      {MyData.description}
+                  <div className="description_profile">
+                    <h3>Description:</h3>
+                    {MyData.description}
                   </div>
-                  ) : null }
+                ) : null}
                 <Create_menu />
                 <div className="bosts">
                   {posts.length === 0 ? (
@@ -478,41 +491,33 @@ const Profile = () => {
                           <div
                             key={index}
                             className="all_bost click_and_listen posts1">
-                              <button className="buttonnn" type="button" onClick={()=> {setConfirm_deletionnID(post._id); setConfirm_deletionn(true)}}>
-                                  <span className="button__text">Delete</span>
-                                  <span className="button__icon">
-                                    <svg
-                                      className="svg"
-                                      height="24"
-                                      viewBox="0 0 512 512"
-                                      width="24"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <path
-                                        d="M112,112l20,320c.95,18.49,14.4,32,32,32H348c17.67,0,30.87-13.51,32-32l20-320"
-                                        style={{
-                                          fill: "none",
-                                          stroke: "#fff",
-                                          strokeLinecap: "round",
-                                          strokeLinejoin: "round",
-                                          strokeWidth: "32px",
-                                        }}
-                                      />
-                                      <line
-                                        x1="80"
-                                        x2="432"
-                                        y1="112"
-                                        y2="112"
-                                        style={{
-                                          stroke: "#fff",
-                                          strokeLinecap: "round",
-                                          strokeMiterlimit: "10",
-                                          strokeWidth: "32px",
-                                        }}
-                                      />
-                                    </svg>
-                                  </span>
-                            </button>
+                            <div key={post._id} className="remove_div-but">
+                              {/* أيقونة النقاط الثلاث */}
+                              <FontAwesomeIcon
+                                className="buttonnn"
+                                icon={faEllipsisVertical}
+                                onClick={(e) => toggleMenu(e, post._id)} // تمرير الـ event والإحداثيات
+                                style={{ cursor: "pointer" }}
+                              />
+
+                              {/* قائمة الحذف */}
+                              <div
+                                id={`remove_but-${post._id}`} // إضافة ID خاص بكل قائمة
+                                className="remove_but"
+                                style={{
+                                  display: showMenus[post._id] ? "block" : "none", // عرض/إخفاء بناءً على الـ ID
+                                }}
+                              >
+                                <p
+                                  onClick={() => {
+                                    setConfirm_deletionnID(post._id);
+                                    setConfirm_deletionn(true);
+                                  }}
+                                >
+                                  <span><FontAwesomeIcon icon={faTrash} /></span> Remove
+                                </p>
+                              </div>
+                            </div>
                             <div className="name_shoole">
                               <img
                                 src={
@@ -614,11 +619,10 @@ const Profile = () => {
                                     }}
                                     icon={faHeart}
                                     className={`inter-icon 
-                                  ${
-                                    post.likes.includes(Mydata)
-                                      ? "active_hart"
-                                      : ""
-                                  }`}
+                                  ${post.likes.includes(Mydata)
+                                        ? "active_hart"
+                                        : ""
+                                      }`}
                                   />
                                 )}
                                 <FontAwesomeIcon
@@ -640,11 +644,10 @@ const Profile = () => {
                                   }}
                                   className={`inter-icon
                       
-        ${
-          bookId && bookId.some((item) => item.post?._id === post._id)
-            ? "active_book"
-            : ""
-        }`}
+        ${bookId && bookId.some((item) => item.post?._id === post._id)
+                                      ? "active_book"
+                                      : ""
+                                    }`}
                                   icon={faBookmark}
                                 />
                               )}
@@ -708,43 +711,37 @@ const Profile = () => {
                         return (
                           <div
                             key={index}
-                            className="all_bost choose_the_correct_answer"
+                            className="all_bost choose_the_correct_answer My_profile"
                           >
-                            <button className="buttonnn" type="button" onClick={()=> {setConfirm_deletionnID(post._id); setConfirm_deletionn(true)}}>
-                                  <span className="button__text">Delete</span>
-                                  <span className="button__icon">
-                                    <svg
-                                      className="svg"
-                                      height="24"
-                                      viewBox="0 0 512 512"
-                                      width="24"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <path
-                                        d="M112,112l20,320c.95,18.49,14.4,32,32,32H348c17.67,0,30.87-13.51,32-32l20-320"
-                                        style={{
-                                          fill: "none",
-                                          stroke: "#fff",
-                                          strokeLinecap: "round",
-                                          strokeLinejoin: "round",
-                                          strokeWidth: "32px",
-                                        }}
-                                      />
-                                      <line
-                                        x1="80"
-                                        x2="432"
-                                        y1="112"
-                                        y2="112"
-                                        style={{
-                                          stroke: "#fff",
-                                          strokeLinecap: "round",
-                                          strokeMiterlimit: "10",
-                                          strokeWidth: "32px",
-                                        }}
-                                      />
-                                    </svg>
-                                  </span>
-                            </button>
+                            <div key={post._id} className="remove_div-but">
+                              {/* أيقونة النقاط الثلاث */}
+                              <FontAwesomeIcon
+                                className="buttonnn"
+                                icon={faEllipsisVertical}
+                                onClick={(e) => toggleMenu(e, post._id)} // تمرير الـ event والإحداثيات
+                                style={{ cursor: "pointer" }}
+                              />
+
+                              {/* قائمة الحذف */}
+                              <div
+                                id={`remove_but-${post._id}`} // إضافة ID خاص بكل قائمة
+                                className="remove_but"
+                                style={{
+                                  display: showMenus[post._id] ? "block" : "none", // عرض/إخفاء بناءً على الـ ID
+                                }}
+                              >
+                                <p
+                                  onClick={() => {
+                                    setConfirm_deletionnID(post._id);
+                                    setConfirm_deletionn(true);
+                                  }}
+                                >
+                                  <span><FontAwesomeIcon icon={faTrash} /></span> Remove
+                                </p>
+                              </div>
+                            </div>
+
+
                             <div className="name_shoole">
                               <img
                                 src={
@@ -764,6 +761,7 @@ const Profile = () => {
                                   )}
                                 </span>
                               </div>
+
                             </div>
                             <div className="choose_answer">
                               <h2>Choose the correct answer!!!</h2>
@@ -895,14 +893,14 @@ const Profile = () => {
                                         {currentPage + 1}/
                                         {Math.ceil(
                                           post.questions.length /
-                                            questionsPerPage
+                                          questionsPerPage
                                         )}
                                       </span>
                                       <button
                                         onClick={handleNext}
                                         disabled={
                                           (currentPage + 1) *
-                                            questionsPerPage >=
+                                          questionsPerPage >=
                                           post.questions.length
                                         }
                                       >
@@ -935,11 +933,10 @@ const Profile = () => {
                                     }}
                                     icon={faHeart}
                                     className={`inter-icon 
-                                  ${
-                                    post.likes.includes(Mydata)
-                                      ? "active_hart"
-                                      : ""
-                                  }`}
+                                  ${post.likes.includes(Mydata)
+                                        ? "active_hart"
+                                        : ""
+                                      }`}
                                   />
                                 )}
                                 <FontAwesomeIcon
@@ -961,11 +958,10 @@ const Profile = () => {
                                   }}
                                   className={`inter-icon
                       
-        ${
-          bookId && bookId.some((item) => item.post?._id === post._id)
-            ? "active_book"
-            : ""
-        }`}
+        ${bookId && bookId.some((item) => item.post?._id === post._id)
+                                      ? "active_book"
+                                      : ""
+                                    }`}
                                   icon={faBookmark}
                                 />
                               )}
@@ -1031,41 +1027,33 @@ const Profile = () => {
                             key={index}
                             className="all_bost bost_true_or-false posts3"
                           >
-                            <button className="buttonnn" type="button" onClick={()=> {setConfirm_deletionnID(post._id); setConfirm_deletionn(true)}}>
-                                  <span className="button__text">Delete</span>
-                                  <span className="button__icon">
-                                    <svg
-                                      className="svg"
-                                      height="24"
-                                      viewBox="0 0 512 512"
-                                      width="24"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <path
-                                        d="M112,112l20,320c.95,18.49,14.4,32,32,32H348c17.67,0,30.87-13.51,32-32l20-320"
-                                        style={{
-                                          fill: "none",
-                                          stroke: "#fff",
-                                          strokeLinecap: "round",
-                                          strokeLinejoin: "round",
-                                          strokeWidth: "32px",
-                                        }}
-                                      />
-                                      <line
-                                        x1="80"
-                                        x2="432"
-                                        y1="112"
-                                        y2="112"
-                                        style={{
-                                          stroke: "#fff",
-                                          strokeLinecap: "round",
-                                          strokeMiterlimit: "10",
-                                          strokeWidth: "32px",
-                                        }}
-                                      />
-                                    </svg>
-                                  </span>
-                            </button>
+                            <div key={post._id} className="remove_div-but">
+                              {/* أيقونة النقاط الثلاث */}
+                              <FontAwesomeIcon
+                                className="buttonnn"
+                                icon={faEllipsisVertical}
+                                onClick={(e) => toggleMenu(e, post._id)} // تمرير الـ event والإحداثيات
+                                style={{ cursor: "pointer" }}
+                              />
+
+                              {/* قائمة الحذف */}
+                              <div
+                                id={`remove_but-${post._id}`} // إضافة ID خاص بكل قائمة
+                                className="remove_but"
+                                style={{
+                                  display: showMenus[post._id] ? "block" : "none", // عرض/إخفاء بناءً على الـ ID
+                                }}
+                              >
+                                <p
+                                  onClick={() => {
+                                    setConfirm_deletionnID(post._id);
+                                    setConfirm_deletionn(true);
+                                  }}
+                                >
+                                  <span><FontAwesomeIcon icon={faTrash} /></span> Remove
+                                </p>
+                              </div>
+                            </div>
                             <div className="name_shoole">
                               <img
                                 src={
@@ -1166,18 +1154,16 @@ const Profile = () => {
                                     // أول شيء الكلاس:
                                     const answerClass =
                                       isCorrect !== undefined
-                                        ? `que_tr_or_fa ${
-                                            isCorrect
-                                              ? "active_true"
-                                              : "active_false"
-                                          }`
+                                        ? `que_tr_or_fa ${isCorrect
+                                          ? "active_true"
+                                          : "active_false"
+                                        }`
                                         : "que_tr_or_fa";
 
                                     const iconClass =
                                       isCorrect !== undefined
-                                        ? `icon_true_or_false ${
-                                            isCorrect ? "iconnone" : "iconnone"
-                                          }`
+                                        ? `icon_true_or_false ${isCorrect ? "iconnone" : "iconnone"
+                                        }`
                                         : "icon_true_or_false";
 
                                     return (
@@ -1273,11 +1259,10 @@ const Profile = () => {
                                     }}
                                     icon={faHeart}
                                     className={`inter-icon 
-                                  ${
-                                    post.likes.includes(Mydata)
-                                      ? "active_hart"
-                                      : ""
-                                  }`}
+                                  ${post.likes.includes(Mydata)
+                                        ? "active_hart"
+                                        : ""
+                                      }`}
                                   />
                                 )}
                                 <FontAwesomeIcon
@@ -1299,11 +1284,10 @@ const Profile = () => {
                                   }}
                                   className={`inter-icon
                       
-        ${
-          bookId && bookId.some((item) => item.post?._id === post._id)
-            ? "active_book"
-            : ""
-        }`}
+        ${bookId && bookId.some((item) => item.post?._id === post._id)
+                                      ? "active_book"
+                                      : ""
+                                    }`}
                                   icon={faBookmark}
                                 />
                               )}
@@ -1370,41 +1354,33 @@ const Profile = () => {
                             className="all_bost image_and_answer posts4"
                           >
 
-                            <button className="buttonnn" type="button" onClick={()=> {setConfirm_deletionnID(post._id); setConfirm_deletionn(true)}}>
-                                  <span className="button__text">Delete</span>
-                                  <span className="button__icon">
-                                    <svg
-                                      className="svg"
-                                      height="24"
-                                      viewBox="0 0 512 512"
-                                      width="24"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <path
-                                        d="M112,112l20,320c.95,18.49,14.4,32,32,32H348c17.67,0,30.87-13.51,32-32l20-320"
-                                        style={{
-                                          fill: "none",
-                                          stroke: "#fff",
-                                          strokeLinecap: "round",
-                                          strokeLinejoin: "round",
-                                          strokeWidth: "32px",
-                                        }}
-                                      />
-                                      <line
-                                        x1="80"
-                                        x2="432"
-                                        y1="112"
-                                        y2="112"
-                                        style={{
-                                          stroke: "#fff",
-                                          strokeLinecap: "round",
-                                          strokeMiterlimit: "10",
-                                          strokeWidth: "32px",
-                                        }}
-                                      />
-                                    </svg>
-                                  </span>
-                            </button>
+                            <div key={post._id} className="remove_div-but">
+                              {/* أيقونة النقاط الثلاث */}
+                              <FontAwesomeIcon
+                                className="buttonnn"
+                                icon={faEllipsisVertical}
+                                onClick={(e) => toggleMenu(e, post._id)} // تمرير الـ event والإحداثيات
+                                style={{ cursor: "pointer" }}
+                              />
+
+                              {/* قائمة الحذف */}
+                              <div
+                                id={`remove_but-${post._id}`} // إضافة ID خاص بكل قائمة
+                                className="remove_but"
+                                style={{
+                                  display: showMenus[post._id] ? "block" : "none", // عرض/إخفاء بناءً على الـ ID
+                                }}
+                              >
+                                <p
+                                  onClick={() => {
+                                    setConfirm_deletionnID(post._id);
+                                    setConfirm_deletionn(true);
+                                  }}
+                                >
+                                  <span><FontAwesomeIcon icon={faTrash} /></span> Remove
+                                </p>
+                              </div>
+                            </div>
                             <div className="name_shoole">
                               <img
                                 src={
@@ -1595,11 +1571,10 @@ const Profile = () => {
                                     }}
                                     icon={faHeart}
                                     className={`inter-icon 
-                                  ${
-                                    post.likes.includes(Mydata)
-                                      ? "active_hart"
-                                      : ""
-                                  }`}
+                                  ${post.likes.includes(Mydata)
+                                        ? "active_hart"
+                                        : ""
+                                      }`}
                                   />
                                 )}
                                 <FontAwesomeIcon
@@ -1621,11 +1596,10 @@ const Profile = () => {
                                   }}
                                   className={`inter-icon
                       
-        ${
-          bookId && bookId.some((item) => item.post?._id === post._id)
-            ? "active_book"
-            : ""
-        }`}
+        ${bookId && bookId.some((item) => item.post?._id === post._id)
+                                      ? "active_book"
+                                      : ""
+                                    }`}
                                   icon={faBookmark}
                                 />
                               )}
@@ -1692,41 +1666,34 @@ const Profile = () => {
                             key={index}
                             className="all_bost video_img_word posts4"
                           >
-                            <button className="buttonnn" type="button" onClick={()=> {setConfirm_deletionnID(post._id); setConfirm_deletionn(true)}}>
-                                  <span className="button__text">Delete</span>
-                                  <span className="button__icon">
-                                    <svg
-                                      className="svg"
-                                      height="24"
-                                      viewBox="0 0 512 512"
-                                      width="24"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <path
-                                        d="M112,112l20,320c.95,18.49,14.4,32,32,32H348c17.67,0,30.87-13.51,32-32l20-320"
-                                        style={{
-                                          fill: "none",
-                                          stroke: "#fff",
-                                          strokeLinecap: "round",
-                                          strokeLinejoin: "round",
-                                          strokeWidth: "32px",
-                                        }}
-                                      />
-                                      <line
-                                        x1="80"
-                                        x2="432"
-                                        y1="112"
-                                        y2="112"
-                                        style={{
-                                          stroke: "#fff",
-                                          strokeLinecap: "round",
-                                          strokeMiterlimit: "10",
-                                          strokeWidth: "32px",
-                                        }}
-                                      />
-                                    </svg>
-                                  </span>
-                            </button>
+      <div key={post._id} className="remove_div-but">
+        {/* أيقونة النقاط الثلاث */}
+        <FontAwesomeIcon
+          className="buttonnn"
+          icon={faEllipsisVertical}
+          onClick={(e) => toggleMenu(e, post._id)} // تمرير الـ event والإحداثيات
+          style={{ cursor: "pointer" }}
+        />
+
+        {/* قائمة الحذف */}
+        <div
+          id={`remove_but-${post._id}`} // إضافة ID خاص بكل قائمة
+          className="remove_but"
+          style={{
+            display: showMenus[post._id] ? "block" : "none", // عرض/إخفاء بناءً على الـ ID
+            position: "absolute", // استخدم position absolute لتحديد مكان القائمة
+          }}
+        >
+          <p
+            onClick={() => {
+              setConfirm_deletionnID(post._id);
+              setConfirm_deletionn(true);
+            }}
+          >
+            <span><FontAwesomeIcon icon={faTrash} /></span> Remove
+          </p>
+        </div>
+      </div>
                             <div className="name_shoole">
                               <img
                                 src={
@@ -1786,11 +1753,10 @@ const Profile = () => {
                                     }}
                                     icon={faHeart}
                                     className={`inter-icon 
-                                  ${
-                                    post.likes.includes(Mydata)
-                                      ? "active_hart"
-                                      : ""
-                                  }`}
+                                  ${post.likes.includes(Mydata)
+                                        ? "active_hart"
+                                        : ""
+                                      }`}
                                   />
                                 )}
                                 <FontAwesomeIcon
@@ -1812,11 +1778,10 @@ const Profile = () => {
                                   }}
                                   className={`inter-icon
                       
-        ${
-          bookId && bookId.some((item) => item.post?._id === post._id)
-            ? "active_book"
-            : ""
-        }`}
+        ${bookId && bookId.some((item) => item.post?._id === post._id)
+                                      ? "active_book"
+                                      : ""
+                                    }`}
                                   icon={faBookmark}
                                 />
                               )}
@@ -1882,41 +1847,68 @@ const Profile = () => {
                       } else if (post.type === "post_6") {
                         return (
                           <div key={index} className="all_bost ifrems posts6">
-                            <button className="buttonnn" type="button" onClick={()=> {setConfirm_deletionnID(post._id); setConfirm_deletionn(true)}}>
-                                  <span className="button__text">Delete</span>
-                                  <span className="button__icon">
-                                    <svg
-                                      className="svg"
-                                      height="24"
-                                      viewBox="0 0 512 512"
-                                      width="24"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <path
-                                        d="M112,112l20,320c.95,18.49,14.4,32,32,32H348c17.67,0,30.87-13.51,32-32l20-320"
-                                        style={{
-                                          fill: "none",
-                                          stroke: "#fff",
-                                          strokeLinecap: "round",
-                                          strokeLinejoin: "round",
-                                          strokeWidth: "32px",
-                                        }}
-                                      />
-                                      <line
-                                        x1="80"
-                                        x2="432"
-                                        y1="112"
-                                        y2="112"
-                                        style={{
-                                          stroke: "#fff",
-                                          strokeLinecap: "round",
-                                          strokeMiterlimit: "10",
-                                          strokeWidth: "32px",
-                                        }}
-                                      />
-                                    </svg>
-                                  </span>
-                            </button>
+                            {/* <button className="buttonnn" type="button" onClick={() => { setConfirm_deletionnID(post._id); setConfirm_deletionn(true) }}>
+                              <span className="button__text">Delete</span>
+                              <span className="button__icon">
+                                <svg
+                                  className="svg"
+                                  height="24"
+                                  viewBox="0 0 512 512"
+                                  width="24"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M112,112l20,320c.95,18.49,14.4,32,32,32H348c17.67,0,30.87-13.51,32-32l20-320"
+                                    style={{
+                                      fill: "none",
+                                      stroke: "#fff",
+                                      strokeLinecap: "round",
+                                      strokeLinejoin: "round",
+                                      strokeWidth: "32px",
+                                    }}
+                                  />
+                                  <line
+                                    x1="80"
+                                    x2="432"
+                                    y1="112"
+                                    y2="112"
+                                    style={{
+                                      stroke: "#fff",
+                                      strokeLinecap: "round",
+                                      strokeMiterlimit: "10",
+                                      strokeWidth: "32px",
+                                    }}
+                                  />
+                                </svg>
+                              </span>
+                            </button> */}
+                            <div key={post._id} className="remove_div-but">
+                              {/* أيقونة النقاط الثلاث */}
+                              <FontAwesomeIcon
+                                className="buttonnn"
+                                icon={faEllipsisVertical}
+                                onClick={(e) => toggleMenu(e, post._id)} // تمرير الـ event والإحداثيات
+                                style={{ cursor: "pointer" }}
+                              />
+
+                              {/* قائمة الحذف */}
+                              <div
+                                id={`remove_but-${post._id}`} // إضافة ID خاص بكل قائمة
+                                className="remove_but"
+                                style={{
+                                  display: showMenus[post._id] ? "block" : "none", // عرض/إخفاء بناءً على الـ ID
+                                }}
+                              >
+                                <p
+                                  onClick={() => {
+                                    setConfirm_deletionnID(post._id);
+                                    setConfirm_deletionn(true);
+                                  }}
+                                >
+                                  <span><FontAwesomeIcon icon={faTrash} /></span> Remove
+                                </p>
+                              </div>
+                            </div>
                             <div className="name_shoole">
                               <img
                                 src={
@@ -1969,11 +1961,10 @@ const Profile = () => {
                                     }}
                                     icon={faHeart}
                                     className={`inter-icon 
-                                  ${
-                                    post.likes.includes(Mydata)
-                                      ? "active_hart"
-                                      : ""
-                                  }`}
+                                  ${post.likes.includes(Mydata)
+                                        ? "active_hart"
+                                        : ""
+                                      }`}
                                   />
                                 )}
                                 <FontAwesomeIcon
@@ -1995,11 +1986,10 @@ const Profile = () => {
                                   }}
                                   className={`inter-icon
                       
-        ${
-          bookId && bookId.some((item) => item.post?._id === post._id)
-            ? "active_book"
-            : ""
-        }`}
+        ${bookId && bookId.some((item) => item.post?._id === post._id)
+                                      ? "active_book"
+                                      : ""
+                                    }`}
                                   icon={faBookmark}
                                 />
                               )}

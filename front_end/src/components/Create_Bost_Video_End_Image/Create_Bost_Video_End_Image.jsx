@@ -65,7 +65,7 @@ const Create_Bost_Video_and_image = () => {
 
     // ✅ طباعة `FormData` للتحقق
     for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
+      // console.log(pair[0], pair[1]);
     }
 
     try {
@@ -157,7 +157,7 @@ const Create_Bost_Video_and_image = () => {
             {/* ✅ عرض الصور والفيديوهات بعد الرفع */}
             <div className="img_vid_flex">
               {imageFiles.map((img, index) => (
-                <div key={index} style={{ position: "relative", width: "50%" }}>
+                <div key={index} style={{ position: "relative", width: "calc(50% - 15px)" }}>
                   <img
                     src={URL.createObjectURL(img)}
                     alt="Selected"
@@ -173,7 +173,7 @@ const Create_Bost_Video_and_image = () => {
               ))}
 
               {videoFiles.map((video, index) => (
-                <div key={index} style={{ position: "relative", width: "50%" }}>
+                <div key={index} style={{ position: "relative", width: "calc(50% - 15px)" }}>
                   <video
                     src={URL.createObjectURL(video)}
                     controls

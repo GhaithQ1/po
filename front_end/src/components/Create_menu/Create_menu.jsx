@@ -117,16 +117,16 @@ const Create_menu = () => {
   return (
     <div className="create_menu">
       <div className="img_create" >
-      <img
-              src={
-                Mydata.googleId
-                  ? Mydata.profilImage || "/image/pngegg.png"
-                  : Mydata.profilImage
-                    ? `http://localhost:8000/user/${Mydata.profilImage}`
-                    : "/image/pngegg.png"
-              }
-              alt={`Image of ${Mydata.name}`}
-            />
+<img
+  src={
+    Mydata.profilImage
+      ? Mydata.profilImage.startsWith("http")
+        ? Mydata.profilImage
+        : `http://localhost:8000/user/${Mydata.profilImage}`
+      : "/image/pngegg.png"
+  }
+  alt={`Image of ${Mydata.name}`}
+/>
         <p>Choose one of the posts to create it.</p>
       </div>
 

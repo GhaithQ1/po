@@ -139,7 +139,7 @@ export default function UpdateProfile() {
               type="text" 
               value={userData.address} 
               onChange={(e) => setUserData({ ...userData, address: e.target.value })} 
-              placeholder="Phone"
+              placeholder="Address"
             />
             </div>
            
@@ -151,7 +151,7 @@ export default function UpdateProfile() {
               placeholder="Description"
             />
             </div>
-            
+            <div className="img_lod_and_input">
             <div className="lod_and_input">
             {LoadInput ? <Loading_input/> : null}
               <div className="image-upload" onClick={() => profileInputRef.current.click()}>
@@ -177,6 +177,8 @@ export default function UpdateProfile() {
             </div>
             </div>
             {/* اختيار صورة الغلاف */}
+            </div>
+
             
 
             <button type="button" onClick={updateProfile}>Update</button>

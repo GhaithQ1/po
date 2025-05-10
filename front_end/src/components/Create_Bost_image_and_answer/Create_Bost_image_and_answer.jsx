@@ -22,6 +22,9 @@ const Create_Bost_image_and_answer = () => {
       lastQuestion?.scrollIntoView({ behavior: 'smooth' });
     }, );
   };
+    const handleRemoveForm = (index) => {
+    setQuestions((prevForms) => prevForms.filter((_, idx) => idx !== index)); // إزالة النموذج
+  };
 
   const handleImageChange = (e, index) => {
     const file = e.target.files[0];
@@ -123,7 +126,13 @@ const Create_Bost_image_and_answer = () => {
           <form className="unified_form" onSubmit={handleSubmit}>
             {questions.map((question, index) => (
               <div key={index} className="form">
-
+                <button
+                  type="button"
+                  className="remove_form_btn"
+                  onClick={() => handleRemoveForm(index)}
+                >
+                  X
+                </button>
                 <label className="image-box">
                   {question.img ? (
                     <img src={URL.createObjectURL(question.img)} alt="preview" className="preview-image" />

@@ -21,7 +21,7 @@
     color: white;
     padding: 5px 10px;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 50%, #000 100%);
-    border-radius: 20px;
+    border-radius: var(--border-radius);
     
   }
   .shoole .slick-list {
@@ -32,8 +32,7 @@
     width: 95%;
     height: 150px;
     object-fit: cover;
-    border-radius: 12px;
-    border-radius: 20px;
+    border-radius: var(--border-radius);
     cursor: pointer;
   }
   .shoole .img_shoole img.log{

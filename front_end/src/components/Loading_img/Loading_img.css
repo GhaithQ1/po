@@ -8,7 +8,7 @@
 }
 
 .loader {
-  border-radius: 20px;
+  border-radius: var(--border-radius);
   position: relative;
   width: 240px;
   height: 150px;
@@ -66,7 +66,7 @@
   width: 70%;
   /* background-color: var(--body-color); */
   background: var(--body-color);
-  border-radius: 10px;
+  border-radius: var(--border-radius);
 }
 
 @keyframes gradient-animation_2 {

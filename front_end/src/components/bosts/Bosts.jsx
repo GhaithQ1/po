@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, use } from "react";
+import { createPortal } from "react-dom";
 import axios from "axios";
 import "./Bosts.css";
 
@@ -20,12 +21,88 @@ import { useCookies } from "react-cookie";
 import { Relod_post } from "../Relod_post/Relod_post";
 import { formatDistanceToNow } from "date-fns";
 import Loading_main from "../Loading_Main/Loading_main";
+import Slider from "react-slick";
 import Loading_coment from "../Loading_coment/Loading_coment";
 import Loading_Bookmark from "../Loading_Bookmark/Loading_Bookmark";
+
+// Facebook-like Modal Gallery Component
+const MediaGalleryModal = ({ isOpen, onClose, media, currentIndex, setCurrentIndex }) => {
+  if (!isOpen) return null;
+  
+  const handlePrevious = () => {
+    setCurrentIndex(prev => (prev === 0 ? media.length - 1 : prev - 1));
+  };
+  
+  const handleNext = () => {
+    setCurrentIndex(prev => (prev === media.length - 1 ? 0 : prev + 1));
+  };
+  
+  const currentMedia = media[currentIndex];
+  
+  return createPortal(
+    <div className="fb-gallery-modal-overlay" onClick={onClose}>
+      <div className="fb-gallery-modal-content" onClick={e => e.stopPropagation()}>
+        <button className="fb-gallery-modal-close" onClick={onClose}>
+          &times;
+        </button>
+        
+        <div className="fb-gallery-modal-navigation">
+          <button className="fb-gallery-modal-prev" onClick={handlePrevious}>
+            &#10094;
+          </button>
+          
+          <div className="fb-gallery-modal-media-container">
+            {currentMedia.type === 'image' ? (
+              <img 
+                src={currentMedia.src} 
+                alt="" 
+                className="fb-gallery-modal-media" 
+              />
+            ) : (
+              <video 
+                src={currentMedia.src} 
+                controls 
+                className="fb-gallery-modal-media" 
+                autoPlay 
+              />
+            )}
+          </div>
+          
+          <button className="fb-gallery-modal-next" onClick={handleNext}>
+            &#10095;
+          </button>
+        </div>
+        
+        <div className="fb-gallery-modal-thumbnails">
+          {media.map((item, idx) => (
+            <div 
+              key={item.key} 
+              className={`fb-gallery-modal-thumbnail ${idx === currentIndex ? 'active' : ''}`}
+              onClick={() => setCurrentIndex(idx)}
+            >
+              {item.type === 'image' ? (
+                <img src={item.src} alt="" />
+              ) : (
+                <div className="video-thumbnail">
+                  <img src={item.src.replace(/\.[^.]+$/, '.jpg')} alt="" />
+                  <span className="video-icon">▶</span>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+};
 
 const Bosts = () => {
   const audioRefs = useRef([]);
   const [posts, setPosts] = useState([]);
+  const [galleryModalOpen, setGalleryModalOpen] = useState(false);
+  const [galleryMedia, setGalleryMedia] = useState([]);
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
   const [cookies] = useCookies(["token"]);
   const inputRef = useRef();
   const [NewComment, SetNewComment] = useState([]);
@@ -264,8 +341,6 @@ const Bosts = () => {
         }
       );
 
-      // استلام البيانات من الـ API
-      console.log(res.data);
     } catch (error) {
       console.error("Error fetching data", error); // في حال حدوث خطأ
     }
@@ -296,28 +371,40 @@ const Bosts = () => {
 
   const commentRef = useRef(null);
 
-useEffect(() => {
-  const handleClickOutside = (event) => {
-    if (
-      commentRef.current &&
-      !commentRef.current.contains(event.target)
-    ) {
-      setShowCommentForPostId(null); // إغلاق الكومنتس
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        commentRef.current &&
+        !commentRef.current.contains(event.target)
+      ) {
+        setShowCommentForPostId(null); // إغلاق الكومنتس
+      }
+    };
+
+    if (showCommentForPostId) {
+      document.addEventListener('mousedown', handleClickOutside);
     }
-  };
 
-  if (showCommentForPostId) {
-    document.addEventListener('mousedown', handleClickOutside);
-  }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showCommentForPostId]);
 
-  return () => {
-    document.removeEventListener('mousedown', handleClickOutside);
-  };
-}, [showCommentForPostId]);
 
+
+  const post5SliderRef = useRef(null);
 
   return (
     <div className="bosts">
+      {/* Modal Gallery Component */}
+      <MediaGalleryModal 
+        isOpen={galleryModalOpen} 
+        onClose={() => setGalleryModalOpen(false)} 
+        media={galleryMedia} 
+        currentIndex={currentMediaIndex} 
+        setCurrentIndex={setCurrentMediaIndex} 
+      />
+      
       {/* عرض البوستات حسب النوع */}
       {relod_1 ? (
         <Loading_main />
@@ -484,60 +571,59 @@ useEffect(() => {
                   )}
                 </div>
                 {showCommentForPostId === post._id && (
-  <div className="blore">
-    <div className="comments" ref={commentRef}>
-      <div className="publisher">
-        <FontAwesomeIcon
-          className="out_icon"
-          onClick={handleCloseComment}
-          icon={faTimes}
-        />
-        <p>
-          publication <span>{post.user.name}</span>
-        </p>
-      </div>
-      <div className="comment">
-        {post.comments.map((com, index) => (
-          <div key={index} className="com">
-            <img
-              src={
-                com.user_comment
-                  ? com.user_comment.googleId
-                    ? com.user_comment.profilImage || "/image/pngegg.png"
-                    : com.user_comment.profilImage
-                      ? `http://localhost:8000/user/${com.user_comment.profilImage}`
-                      : "/image/pngegg.png"
-                  : "/image/pngegg.png"
-              }
-              alt={`Image of ${com.user_comment?.name || "user"}`}
-            />
-            <div className="name_user_comment">
-              <span>{com.user_comment.name}</span>
-              <p style={{ whiteSpace: "pre-line" }}>
-                {com.comment}
-              </p>
-            </div>
-          </div>
-        ))}
-        {relod_coment ? <Loading_coment /> : null}
-      </div>
-      <form action="" onSubmit={(e) => Commentary(post._id, e)}>
-        <input
-          type="text"
-          placeholder="Write a comment..."
-          ref={inputRef}
-        />
-        <button type="submit" onClick={addNewQuestion}>
-          Send
-        </button>
-      </form>
-    </div>
-  </div>
-)}
+                  <div className="blore">
+                    <div className="comments" ref={commentRef}>
+                      <div className="publisher">
+                        <FontAwesomeIcon
+                          className="out_icon"
+                          onClick={handleCloseComment}
+                          icon={faTimes}
+                        />
+                        <p>
+                          publication <span>{post.user.name}</span>
+                        </p>
+                      </div>
+                      <div className="comment">
+                        {post.comments.map((com, index) => (
+                          <div key={index} className="com">
+                            <img
+                              src={
+                                com.user_comment?.profilImage
+                                  ? com.user_comment.profilImage.startsWith("http")
+                                    ? com.user_comment.profilImage
+                                    : `http://localhost:8000/user/${com.user_comment.profilImage}`
+                                  : "/image/pngegg.png"
+                              }
+                              alt={`Image of ${com.user_comment?.name || "user"}`}
+                            />
+
+                            <div className="name_user_comment">
+                              <span>{com.user_comment.name}</span>
+                              <p style={{ whiteSpace: "pre-line" }}>
+                                {com.comment}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                        {relod_coment ? <Loading_coment /> : null}
+                      </div>
+                      <form action="" onSubmit={(e) => Commentary(post._id, e)}>
+                        <input
+                          type="text"
+                          placeholder="Write a comment..."
+                          ref={inputRef}
+                        />
+                        <button type="submit" onClick={addNewQuestion}>
+                          Send
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                )}
 
               </div>
             );
-          } 
+          }
           else if (post.type === "post_2") {
             return (
               <div key={index} className="all_bost choose_the_correct_answer">
@@ -744,60 +830,59 @@ useEffect(() => {
                   )}
                 </div>
                 {showCommentForPostId === post._id && (
-  <div className="blore">
-    <div className="comments" ref={commentRef}>
-      <div className="publisher">
-        <FontAwesomeIcon
-          className="out_icon"
-          onClick={handleCloseComment}
-          icon={faTimes}
-        />
-        <p>
-          publication <span>{post.user.name}</span>
-        </p>
-      </div>
-      <div className="comment">
-        {post.comments.map((com, index) => (
-          <div key={index} className="com">
-            <img
-              src={
-                com.user_comment
-                  ? com.user_comment.googleId
-                    ? com.user_comment.profilImage || "/image/pngegg.png"
-                    : com.user_comment.profilImage
-                      ? `http://localhost:8000/user/${com.user_comment.profilImage}`
-                      : "/image/pngegg.png"
-                  : "/image/pngegg.png"
-              }
-              alt={`Image of ${com.user_comment?.name || "user"}`}
-            />
-            <div className="name_user_comment">
-              <span>{com.user_comment.name}</span>
-              <p style={{ whiteSpace: "pre-line" }}>
-                {com.comment}
-              </p>
-            </div>
-          </div>
-        ))}
-        {relod_coment ? <Loading_coment /> : null}
-      </div>
-      <form action="" onSubmit={(e) => Commentary(post._id, e)}>
-        <input
-          type="text"
-          placeholder="Write a comment..."
-          ref={inputRef}
-        />
-        <button type="submit" onClick={addNewQuestion}>
-          Send
-        </button>
-      </form>
-    </div>
-  </div>
-)}
+                  <div className="blore">
+                    <div className="comments" ref={commentRef}>
+                      <div className="publisher">
+                        <FontAwesomeIcon
+                          className="out_icon"
+                          onClick={handleCloseComment}
+                          icon={faTimes}
+                        />
+                        <p>
+                          publication <span>{post.user.name}</span>
+                        </p>
+                      </div>
+                      <div className="comment">
+                        {post.comments.map((com, index) => (
+                          <div key={index} className="com">
+                            <img
+                              src={
+                                com.user_comment?.profilImage
+                                  ? com.user_comment.profilImage.startsWith("http")
+                                    ? com.user_comment.profilImage
+                                    : `http://localhost:8000/user/${com.user_comment.profilImage}`
+                                  : "/image/pngegg.png"
+                              }
+                              alt={`Image of ${com.user_comment?.name || "user"}`}
+                            />
+
+                            <div className="name_user_comment">
+                              <span>{com.user_comment?.name}</span>
+                              <p style={{ whiteSpace: "pre-line" }}>
+                                {com?.comment}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                        {relod_coment ? <Loading_coment /> : null}
+                      </div>
+                      <form action="" onSubmit={(e) => Commentary(post._id, e)}>
+                        <input
+                          type="text"
+                          placeholder="Write a comment..."
+                          ref={inputRef}
+                        />
+                        <button type="submit" onClick={addNewQuestion}>
+                          Send
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                )}
 
               </div>
             );
-          } 
+          }
           else if (post.type === "post_3") {
             return (
               <div key={index} className="all_bost bost_true_or-false posts3">
@@ -1011,60 +1096,59 @@ useEffect(() => {
                   )}
                 </div>
                 {showCommentForPostId === post._id && (
-  <div className="blore">
-    <div className="comments" ref={commentRef}>
-      <div className="publisher">
-        <FontAwesomeIcon
-          className="out_icon"
-          onClick={handleCloseComment}
-          icon={faTimes}
-        />
-        <p>
-          publication <span>{post.user.name}</span>
-        </p>
-      </div>
-      <div className="comment">
-        {post.comments.map((com, index) => (
-          <div key={index} className="com">
-            <img
-              src={
-                com.user_comment
-                  ? com.user_comment.googleId
-                    ? com.user_comment.profilImage || "/image/pngegg.png"
-                    : com.user_comment.profilImage
-                      ? `http://localhost:8000/user/${com.user_comment.profilImage}`
-                      : "/image/pngegg.png"
-                  : "/image/pngegg.png"
-              }
-              alt={`Image of ${com.user_comment?.name || "user"}`}
-            />
-            <div className="name_user_comment">
-              <span>{com.user_comment.name}</span>
-              <p style={{ whiteSpace: "pre-line" }}>
-                {com.comment}
-              </p>
-            </div>
-          </div>
-        ))}
-        {relod_coment ? <Loading_coment /> : null}
-      </div>
-      <form action="" onSubmit={(e) => Commentary(post._id, e)}>
-        <input
-          type="text"
-          placeholder="Write a comment..."
-          ref={inputRef}
-        />
-        <button type="submit" onClick={addNewQuestion}>
-          Send
-        </button>
-      </form>
-    </div>
-  </div>
-)}
+                  <div className="blore">
+                    <div className="comments" ref={commentRef}>
+                      <div className="publisher">
+                        <FontAwesomeIcon
+                          className="out_icon"
+                          onClick={handleCloseComment}
+                          icon={faTimes}
+                        />
+                        <p>
+                          publication <span>{post.user.name}</span>
+                        </p>
+                      </div>
+                      <div className="comment">
+                        {post.comments.map((com, index) => (
+                          <div key={index} className="com">
+                            <img
+                              src={
+                                com.user_comment?.profilImage
+                                  ? com.user_comment.profilImage.startsWith("http")
+                                    ? com.user_comment.profilImage
+                                    : `http://localhost:8000/user/${com.user_comment.profilImage}`
+                                  : "/image/pngegg.png"
+                              }
+                              alt={`Image of ${com.user_comment?.name || "user"}`}
+                            />
+
+                            <div className="name_user_comment">
+                              <span>{com.user_comment.name}</span>
+                              <p style={{ whiteSpace: "pre-line" }}>
+                                {com.comment}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                        {relod_coment ? <Loading_coment /> : null}
+                      </div>
+                      <form action="" onSubmit={(e) => Commentary(post._id, e)}>
+                        <input
+                          type="text"
+                          placeholder="Write a comment..."
+                          ref={inputRef}
+                        />
+                        <button type="submit" onClick={addNewQuestion}>
+                          Send
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                )}
 
               </div>
             );
-          } 
+          }
           else if (post.type === "post_4") {
             return (
               <div key={index} className="all_bost image_and_answer posts4">
@@ -1268,60 +1352,59 @@ useEffect(() => {
                 </div>
 
                 {showCommentForPostId === post._id && (
-  <div className="blore">
-    <div className="comments" ref={commentRef}>
-      <div className="publisher">
-        <FontAwesomeIcon
-          className="out_icon"
-          onClick={handleCloseComment}
-          icon={faTimes}
-        />
-        <p>
-          publication <span>{post.user.name}</span>
-        </p>
-      </div>
-      <div className="comment">
-        {post.comments.map((com, index) => (
-          <div key={index} className="com">
-            <img
-              src={
-                com.user_comment
-                  ? com.user_comment.googleId
-                    ? com.user_comment.profilImage || "/image/pngegg.png"
-                    : com.user_comment.profilImage
-                      ? `http://localhost:8000/user/${com.user_comment.profilImage}`
-                      : "/image/pngegg.png"
-                  : "/image/pngegg.png"
-              }
-              alt={`Image of ${com.user_comment?.name || "user"}`}
-            />
-            <div className="name_user_comment">
-              <span>{com.user_comment.name}</span>
-              <p style={{ whiteSpace: "pre-line" }}>
-                {com.comment}
-              </p>
-            </div>
-          </div>
-        ))}
-        {relod_coment ? <Loading_coment /> : null}
-      </div>
-      <form action="" onSubmit={(e) => Commentary(post._id, e)}>
-        <input
-          type="text"
-          placeholder="Write a comment..."
-          ref={inputRef}
-        />
-        <button type="submit" onClick={addNewQuestion}>
-          Send
-        </button>
-      </form>
-    </div>
-  </div>
-)}
+                  <div className="blore">
+                    <div className="comments" ref={commentRef}>
+                      <div className="publisher">
+                        <FontAwesomeIcon
+                          className="out_icon"
+                          onClick={handleCloseComment}
+                          icon={faTimes}
+                        />
+                        <p>
+                          publication <span>{post.user.name}</span>
+                        </p>
+                      </div>
+                      <div className="comment">
+                        {post.comments.map((com, index) => (
+                          <div key={index} className="com">
+                            <img
+                              src={
+                                com.user_comment?.profilImage
+                                  ? com.user_comment.profilImage.startsWith("http")
+                                    ? com.user_comment.profilImage
+                                    : `http://localhost:8000/user/${com.user_comment.profilImage}`
+                                  : "/image/pngegg.png"
+                              }
+                              alt={`Image of ${com.user_comment?.name || "user"}`}
+                            />
+
+                            <div className="name_user_comment">
+                              <span>{com.user_comment.name}</span>
+                              <p style={{ whiteSpace: "pre-line" }}>
+                                {com.comment}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                        {relod_coment ? <Loading_coment /> : null}
+                      </div>
+                      <form action="" onSubmit={(e) => Commentary(post._id, e)}>
+                        <input
+                          type="text"
+                          placeholder="Write a comment..."
+                          ref={inputRef}
+                        />
+                        <button type="submit" onClick={addNewQuestion}>
+                          Send
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                )}
 
               </div>
             );
-          } 
+          }
           else if (post.type === "post_5") {
             return (
               <div key={index} className="all_bost video_img_word posts4">
@@ -1348,25 +1431,136 @@ useEffect(() => {
                     {post.writing ? post.writing : null}
                   </p>
 
-                  {post.img_post
-                    ? post.img_post.map((img, index) => (
-                      <img
-                        key={index}
-                        src={`http://localhost:8000/posts/${img}`}
-                        alt=""
-                      />
-                    ))
-                    : null}
-                  {post.video_post
-                    ? post.video_post.map((video, index) => (
-                      <video
-                        key={index}
-                        src={`http://localhost:8000/posts/${video}`}
-                        controls
-                      />
-                    ))
-                    : null}
+                  {/* Check if there are media items to display */}
+                  {((post.img_post && post.img_post.length > 0) || (post.video_post && post.video_post.length > 0)) && (
+                    <div className="post5-media-slider">
+                      {(() => {
+                        const allMedia = [];
+                        
+                        // Add videos first to prioritize them
+                        if (post.video_post && post.video_post.length > 0) {
+                          post.video_post.forEach((video, index) => {
+                            allMedia.push({
+                              type: 'video',
+                              src: `http://localhost:8000/posts/${video}`,
+                              key: `video-${index}`
+                            });
+                          });
+                        }
+                        
+                        // Then add images
+                        if (post.img_post && post.img_post.length > 0) {
+                          post.img_post.forEach((img, index) => {
+                            allMedia.push({
+                              type: 'image',
+                              src: `http://localhost:8000/posts/${img}`,
+                              key: `img-${index}`
+                            });
+                          });
+                        }
 
+                        // Function to open gallery modal
+                        const openGalleryModal = (mediaIndex) => {
+                          setGalleryMedia(allMedia);
+                          setCurrentMediaIndex(mediaIndex);
+                          setGalleryModalOpen(true);
+                        };
+                        
+                        // Facebook-like gallery layout
+                        if (allMedia.length === 1) {
+                          // Single media item - full width
+                          const media = allMedia[0];
+                          return (
+                            <div className="fb-gallery fb-gallery-single" onClick={() => openGalleryModal(0)}>
+                              {media.type === 'image' ? (
+                                <img src={media.src} alt="" className="post-media" />
+                              ) : (
+                                <video src={media.src} controls className="post-media" onClick={(e) => e.stopPropagation()} />
+                              )}
+                            </div>
+                          );
+                        } else if (allMedia.length === 2) {
+                          // Two media items - side by side
+                          return (
+                            <div className="fb-gallery fb-gallery-two">
+                              {allMedia.map((media, index) => (
+                                <div className="fb-gallery-item" key={media.key} onClick={() => openGalleryModal(index)}>
+                                  {media.type === 'image' ? (
+                                    <img src={media.src} alt="" className="post-media" />
+                                  ) : (
+                                    <video src={media.src} controls className="post-media" onClick={(e) => e.stopPropagation()} />
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          );
+                        } else if (allMedia.length === 3) {
+                          // Three media items - one large, two small
+                          return (
+                            <div className="fb-gallery fb-gallery-three">
+                              <div className="fb-gallery-main" onClick={() => openGalleryModal(0)}>
+                                {allMedia[0].type === 'image' ? (
+                                  <img src={allMedia[0].src} alt="" className="post-media" />
+                                ) : (
+                                  <video src={allMedia[0].src} controls className="post-media" onClick={(e) => e.stopPropagation()} />
+                                )}
+                              </div>
+                              <div className="fb-gallery-side">
+                                {allMedia.slice(1, 3).map((media, index) => (
+                                  <div className="fb-gallery-item" key={media.key} onClick={() => openGalleryModal(index + 1)}>
+                                    {media.type === 'image' ? (
+                                      <img src={media.src} alt="" className="post-media" />
+                                    ) : (
+                                      <video src={media.src} controls className="post-media" onClick={(e) => e.stopPropagation()} />
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        } else if (allMedia.length === 4) {
+                          // Four media items - 2x2 grid
+                          return (
+                            <div className="fb-gallery fb-gallery-four">
+                              {allMedia.map((media, index) => (
+                                <div className="fb-gallery-item" key={media.key} onClick={() => openGalleryModal(index)}>
+                                  {media.type === 'image' ? (
+                                    <img src={media.src} alt="" className="post-media" />
+                                  ) : (
+                                    <video src={media.src} controls className="post-media" onClick={(e) => e.stopPropagation()} />
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          );
+                        } else if (allMedia.length >= 5) {
+                          // Five or more media items - show first 4 with a count overlay on the last one
+                          // We've already prioritized videos in the allMedia array, so they'll appear first
+                          return (
+                            <div className="fb-gallery fb-gallery-many">
+                              {allMedia.slice(0, 4).map((media, index) => (
+                                <div className="fb-gallery-item" key={media.key} onClick={() => openGalleryModal(index)}>
+                                  {media.type === 'image' ? (
+                                    <img src={media.src} alt="" className="post-media" />
+                                  ) : (
+                                    <video src={media.src} controls className="post-media" onClick={(e) => e.stopPropagation()} />
+                                  )}
+                                  {index === 3 && allMedia.length > 4 && (
+                                    <div className="fb-gallery-more">
+                                      <span>+{allMedia.length - 4}</span>
+                                    </div>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          );
+                        } else {
+                          return null;
+                        }
+                      })()}
+             
+                    </div>
+                  )}
                   <div className="comment_lenght">
                     <p>
                       Comments : <span>{post.comments.length}</span>
@@ -1418,60 +1612,59 @@ useEffect(() => {
                   )}
                 </div>
                 {showCommentForPostId === post._id && (
-  <div className="blore">
-    <div className="comments" ref={commentRef}>
-      <div className="publisher">
-        <FontAwesomeIcon
-          className="out_icon"
-          onClick={handleCloseComment}
-          icon={faTimes}
-        />
-        <p>
-          publication <span>{post.user.name}</span>
-        </p>
-      </div>
-      <div className="comment">
-        {post.comments.map((com, index) => (
-          <div key={index} className="com">
-            <img
-              src={
-                com.user_comment
-                  ? com.user_comment.googleId
-                    ? com.user_comment.profilImage || "/image/pngegg.png"
-                    : com.user_comment.profilImage
-                      ? `http://localhost:8000/user/${com.user_comment.profilImage}`
-                      : "/image/pngegg.png"
-                  : "/image/pngegg.png"
-              }
-              alt={`Image of ${com.user_comment?.name || "user"}`}
-            />
-            <div className="name_user_comment">
-              <span>{com.user_comment.name}</span>
-              <p style={{ whiteSpace: "pre-line" }}>
-                {com.comment}
-              </p>
-            </div>
-          </div>
-        ))}
-        {relod_coment ? <Loading_coment /> : null}
-      </div>
-      <form action="" onSubmit={(e) => Commentary(post._id, e)}>
-        <input
-          type="text"
-          placeholder="Write a comment..."
-          ref={inputRef}
-        />
-        <button type="submit" onClick={addNewQuestion}>
-          Send
-        </button>
-      </form>
-    </div>
-  </div>
-)}
+                  <div className="blore">
+                    <div className="comments" ref={commentRef}>
+                      <div className="publisher">
+                        <FontAwesomeIcon
+                          className="out_icon"
+                          onClick={handleCloseComment}
+                          icon={faTimes}
+                        />
+                        <p>
+                          publication <span>{post.user.name}</span>
+                        </p>
+                      </div>
+                      <div className="comment">
+                        {post.comments.map((com, index) => (
+                          <div key={index} className="com">
+                            <img
+                              src={
+                                com.user_comment?.profilImage
+                                  ? com.user_comment.profilImage.startsWith("http")
+                                    ? com.user_comment.profilImage
+                                    : `http://localhost:8000/user/${com.user_comment.profilImage}`
+                                  : "/image/pngegg.png"
+                              }
+                              alt={`Image of ${com.user_comment?.name || "user"}`}
+                            />
+
+                            <div className="name_user_comment">
+                              <span>{com.user_comment.name}</span>
+                              <p style={{ whiteSpace: "pre-line" }}>
+                                {com.comment}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                        {relod_coment ? <Loading_coment /> : null}
+                      </div>
+                      <form action="" onSubmit={(e) => Commentary(post._id, e)}>
+                        <input
+                          type="text"
+                          placeholder="Write a comment..."
+                          ref={inputRef}
+                        />
+                        <button type="submit" onClick={addNewQuestion}>
+                          Send
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                )}
 
               </div>
             );
-          } 
+          }
           else if (post.type === "post_6") {
             return (
               <div key={index} className="all_bost ifrems posts6">
@@ -1562,61 +1755,60 @@ useEffect(() => {
                   )}
                 </div>
                 {showCommentForPostId === post._id && (
-  <div className="blore">
-    <div className="comments" ref={commentRef}>
-      <div className="publisher">
-        <FontAwesomeIcon
-          className="out_icon"
-          onClick={handleCloseComment}
-          icon={faTimes}
-        />
-        <p>
-          publication <span>{post.user.name}</span>
-        </p>
-      </div>
-      <div className="comment">
-        {post.comments.map((com, index) => (
-          <div key={index} className="com">
-            <img
-              src={
-                com.user_comment
-                  ? com.user_comment.googleId
-                    ? com.user_comment.profilImage || "/image/pngegg.png"
-                    : com.user_comment.profilImage
-                      ? `http://localhost:8000/user/${com.user_comment.profilImage}`
-                      : "/image/pngegg.png"
-                  : "/image/pngegg.png"
-              }
-              alt={`Image of ${com.user_comment?.name || "user"}`}
-            />
-            <div className="name_user_comment">
-              <span>{com.user_comment.name}</span>
-              <p style={{ whiteSpace: "pre-line" }}>
-                {com.comment}
-              </p>
-            </div>
-          </div>
-        ))}
-        {relod_coment ? <Loading_coment /> : null}
-      </div>
-      <form action="" onSubmit={(e) => Commentary(post._id, e)}>
-        <input
-          type="text"
-          placeholder="Write a comment..."
-          ref={inputRef}
-        />
-        <button type="submit" onClick={addNewQuestion}>
-          Send
-        </button>
-      </form>
-    </div>
-  </div>
-)}
+                  <div className="blore">
+                    <div className="comments" ref={commentRef}>
+                      <div className="publisher">
+                        <FontAwesomeIcon
+                          className="out_icon"
+                          onClick={handleCloseComment}
+                          icon={faTimes}
+                        />
+                        <p>
+                          publication <span>{post.user.name}</span>
+                        </p>
+                      </div>
+                      <div className="comment">
+                        {post.comments.map((com, index) => (
+                          <div key={index} className="com">
+                            <img
+                              src={
+                                com.user_comment?.profilImage
+                                  ? com.user_comment.profilImage.startsWith("http")
+                                    ? com.user_comment.profilImage
+                                    : `http://localhost:8000/user/${com.user_comment.profilImage}`
+                                  : "/image/pngegg.png"
+                              }
+                              alt={`Image of ${com.user_comment?.name || "user"}`}
+                            />
+
+                            <div className="name_user_comment">
+                              <span>{com.user_comment.name}</span>
+                              <p style={{ whiteSpace: "pre-line" }}>
+                                {com.comment}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                        {relod_coment ? <Loading_coment /> : null}
+                      </div>
+                      <form action="" onSubmit={(e) => Commentary(post._id, e)}>
+                        <input
+                          type="text"
+                          placeholder="Write a comment..."
+                          ref={inputRef}
+                        />
+                        <button type="submit" onClick={addNewQuestion}>
+                          Send
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                )}
 
               </div>
             );
           }
-           else {
+          else {
             return null;
           }
         })
